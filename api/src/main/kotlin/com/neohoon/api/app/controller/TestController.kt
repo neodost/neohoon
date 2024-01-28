@@ -1,5 +1,6 @@
 package com.neohoon.api.app.controller
 
+import com.neohoon.api.app.dto.TestDto
 import com.neohoon.api.app.repository.TestRepository
 import com.neohoon.domain.test.Test
 import org.springframework.data.domain.Page
@@ -13,6 +14,6 @@ class TestController(
 ) {
 
     @GetMapping
-    fun hello(pageable: Pageable): Page<Test> = testRepository.findAll(pageable)
+    fun hello(pageable: Pageable): Page<TestDto> = testRepository.searchAll(pageable)
 
 }

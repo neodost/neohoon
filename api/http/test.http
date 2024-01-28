@@ -1,0 +1,7 @@
+###
+# @name pageable test
+GET {{host}}/
+    ?pageNum=1
+    &pageSize=10
+    &sort=ts.subName,desc
+    &sort=tsd.data,desc

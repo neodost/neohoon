@@ -13,9 +13,10 @@ public class Test {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "test_id")
+    @Column(name = "test_id", nullable = false, updatable = false)
     private Long id;
 
+    @Column(nullable = false, length = 12)
     private String name;
 
     public Test(String name) {
