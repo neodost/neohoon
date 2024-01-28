@@ -5,7 +5,6 @@ import com.neohoon.domain.test.Test
 import org.springframework.boot.context.event.ApplicationStartedEvent
 import org.springframework.context.ApplicationListener
 import org.springframework.stereotype.Component
-import java.util.*
 import kotlin.random.Random
 
 @Component
