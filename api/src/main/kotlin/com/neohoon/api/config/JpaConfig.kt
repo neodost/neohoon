@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @EntityScan(basePackages = [
-    "com.neohoon.domain"
+    "com.neohoon.domain.entity"
 ])
 class JpaConfig {
 }
