@@ -26,7 +26,7 @@ class SecurityConfig(
     private val oauth2SuccessHandler: Oauth2SuccessHandler,
     private val jwtFilter: JwtFilter,
 
-    @Value("\${neohoon.server.cors.allowed-origins}")
+    @Value("\${neohoon.security.cors.allowed-origins}")
     private val allowedOrigins: Array<String>
 ) {
 
@@ -38,12 +38,10 @@ class SecurityConfig(
             cors { it.configurationSource(corsConfigurationSource()) }
             authorizeHttpRequests {
                 it.requestMatchers(*antMatchers("/docs/**")).permitAll()
-                it.requestMatchers(*antMatchers("/v3/**")).permitAll()
 
                 it.requestMatchers(*antMatchers("/login/oauth2/code/**")).permitAll()
                 it.requestMatchers(*antMatchers("/oauth2/authorization/**")).permitAll()
-                it.requestMatchers(*antMatchers("/api/v1/authenticate")).permitAll()
-                it.requestMatchers(*antMatchers("/dev/v1/**")).permitAll()
+
                 it.requestMatchers(*antMatchers("/api/v1/**")).authenticated()
                 it.anyRequest().denyAll()
             }

@@ -10,14 +10,14 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
-@Table(name = "member_role")
+@Table(name = "member_token")
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class MemberToken {
 
     @Id
-    @Column(nullable = false, updatable = false)
+    @Column(nullable = false, updatable = false, length = 36)
     private String token;
 
     @Column(nullable = false, updatable = false)
@@ -31,6 +31,7 @@ public class MemberToken {
     private Member member;
 
     public MemberToken(Member member, String validationKey, int expireDay) {
+        this.token = UUID.randomUUID().toString();
         this.member = member;
         this.validationKey = validationKey;
         this.expireDate = LocalDateTime.now().plusDays(expireDay);

@@ -27,6 +27,13 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation(group = "io.jsonwebtoken", name = "jjwt-api", version = "0.12.3")
+    implementation(group = "io.jsonwebtoken", name = "jjwt-impl", version = "0.12.3")
+    implementation(group = "io.jsonwebtoken", name = "jjwt-jackson", version = "0.12.3")
+
+
+    // https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter
+    implementation(group = "com.github.ulisesbocchio", name = "jasypt-spring-boot-starter", version = "3.0.5")
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     runtimeOnly("com.mysql:mysql-connector-j")

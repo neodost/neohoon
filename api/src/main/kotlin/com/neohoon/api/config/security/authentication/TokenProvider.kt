@@ -20,10 +20,10 @@ import java.util.*
 @Component
 class TokenProvider(
 
-    @Value("\${neohoon.auth.jwt.secret}")
+    @Value("\${neohoon.security.auth.jwt.secret}")
     secret: String,
 
-    @Value("\${neohoon.auth.jwt.validity-in-seconds}")
+    @Value("\${neohoon.security.auth.jwt.validity-in-seconds}")
     tokenValidityInSeconds: Long,
 
     ) {
@@ -90,7 +90,7 @@ class TokenProvider(
             e.claims
         }
         return UserInfo(
-            claims.get(ID_NAME, Long::class.java),
+            claims.get(ID_NAME, Integer::class.java).toLong(),
             extractAuthorityFromClaims(claims),
             claims.get(REFRESH_KEY_NAME, String::class.java)
         )

@@ -27,7 +27,7 @@ class AuthService(
     private val memberTokenRepository: MemberTokenRepository,
     private val tokenProvider: TokenProvider,
     private val userDetailsService: CustomUserDetailsService,
-    @Value("\${neohoon.config.security.authentication.expire-day}")
+    @Value("\${neohoon.security.auth.expire-day}")
     private val expireDay: Int
 ) {
 
