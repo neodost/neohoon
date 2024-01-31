@@ -30,7 +30,7 @@ public class BaseEntity {
     @Column(nullable = false)
     private Boolean deleted = false;
 
-    public void markDeleted(Long loginUserId) {
+    public void delete(Long loginUserId) {
         if (this.deleted) {
             return;
         }

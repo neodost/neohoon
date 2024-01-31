@@ -1,26 +1,17 @@
 import {request} from "../request.js";
-import {goto} from "$app/navigation";
-import {auth} from "$lib/store/auth.js";
+import {createAuth} from "$lib/store/auth.svelte.js";
 const API_SERVER = import.meta.env.VITE_API_SERVER;
+
+let auth = createAuth();
 
 const logout = () => {
     localStorage.removeItem('accessToken')
-    auth.update(() => null)
+    auth.set(null);
 }
 
 export default {
-
-    login: (username, password) => {
-        return request('/api/v1/authenticate', {
-            method: 'POST',
-            body: new URLSearchParams({
-                username, password
-            })
-        })
-    },
-
     loginByOAuth: (provider) => {
-        goto(`${API_SERVER}/oauth2/authorization/${provider}`)
+        location.href = `${API_SERVER}/oauth2/authorization/${provider}`
     },
 
     loadUser: () => {
@@ -30,7 +21,7 @@ export default {
 
         return request('/api/v1/member/me')
             .then((response) => {
-                auth.update(() => ({...response}))
+                auth.set({...response});
             })
             .catch(() => {
                 logout();

@@ -1,15 +1,16 @@
 <script>
 
     import authService from "$lib/service/auth-service.js";
-    import {onMount} from "svelte";
 
-    $: initialized = false
+    let initialized = $state(false);
 
-    onMount(() => {
-        authService.loadUser()
-            .then(() => {
-                initialized = true;
-            })
+    $effect(() => {
+        if (!initialized) {
+            authService.loadUser()
+                .then(() => {
+                    initialized = true;
+                })
+        }
     })
 
 </script>
