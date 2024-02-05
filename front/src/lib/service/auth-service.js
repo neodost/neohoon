@@ -1,12 +1,14 @@
-import {request} from "../request.js";
 import {createAuth} from "$lib/store/auth.svelte.js";
+import client from "$lib/util/axios.js";
+
 const API_SERVER = import.meta.env.VITE_API_SERVER;
 
-let auth = createAuth();
+let store = createAuth();
 
 const logout = () => {
     localStorage.removeItem('accessToken')
-    auth.set(null);
+    // auth.set(null);
+    store.auth = null;
 }
 
 export default {
@@ -14,24 +16,33 @@ export default {
         location.href = `${API_SERVER}/oauth2/authorization/${provider}`
     },
 
+    logout: () => {
+        localStorage.removeItem('accessToken')
+        store.auth = null;
+    },
+
     loadUser: () => {
         if (!localStorage.getItem('accessToken')) {
             return Promise.resolve()
         }
 
-        return request('/api/v1/member/me')
-            .then((response) => {
-                auth.set({...response});
+        return client.get('/member/me')
+            .then(response => {
+                store.auth = {...response.data};
+                return response.data;
             })
-            .catch(() => {
+            .catch((e) => {
+                console.log(e);
                 logout();
-            });
+            })
     },
 
-    logout,
-
-    saveAccessToken: (accessToken) => {
+    set accessToken(accessToken) {
         localStorage.setItem('accessToken', accessToken);
+    },
+
+    get accessToken() {
+        return localStorage.getItem('accessToken');
     }
 
 }

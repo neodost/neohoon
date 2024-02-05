@@ -53,6 +53,10 @@ server:
     key-store-password: ENC(0mVe3J/cfje4Vf3BfRD2tIP6T6Au98gmWO/DDUwieHc=)
     key-store-type: PKCS12
     enabled-protocols: TLSv1.1,TLSv1.2
+  servlet:
+    session:
+      cookie:
+        name: nhsid
 
 jasypt:
   encryptor:
@@ -64,7 +68,7 @@ jasypt:
 neohoon:
   security:
     cors:
-      allowed-origins: http://localhost:5173, http://127.0.0.1:5173
+      allowed-origins: http://localhost:5173,https://drumtong.neohoon.com
     auth:
       expire-day: 14
       jwt:
@@ -74,4 +78,6 @@ neohoon:
     target: http://localhost:5173
   api:
     version: v1
-
+logging:
+  level:
+    com.neohoon: debug

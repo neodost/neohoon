@@ -1,5 +1,4 @@
-<script>
-
+<script xmlns:svelt="http://www.w3.org/1999/html">
     import authService from "$lib/service/auth-service.js";
     import {createAuth} from "$lib/store/auth.svelte.js";
 
@@ -19,27 +18,22 @@
 
     {#if !!authStore.auth}
         <div>
-
             logged in : {authStore.auth.id}
-
         </div>
         <div>
-
-            roles: {authStore.auth.authorities}
-
+            roles: {authStore.auth.authorities.map(it => it.authority).join(',')}
         </div>
-
         <button on:click={handleLogout}>Logout</button>
-
     {:else}
         <label >
             username: <input type="text" value={authStore.auth?.id}>
         </label>
-
         <div>
             <button on:click={() => {loginByOAuth('kakao')}}>kakao</button>
             <button on:click={() => {loginByOAuth('naver')}}>naver</button>
         </div>
     {/if}
+
+    <a href="/test">asdf</a>
 
 </main>

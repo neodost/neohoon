@@ -45,7 +45,7 @@ class SecurityConfig(
                 it.requestMatchers(*antMatchers("/api/v1/**")).authenticated()
                 it.anyRequest().denyAll()
             }
-            sessionManagement { it.sessionCreationPolicy(SessionCreationPolicy.STATELESS) }
+//            sessionManagement { it.disable() }
             exceptionHandling {
                 it.accessDeniedHandler(accessDeniedHandler)
                 it.authenticationEntryPoint(authenticationEntryPoint)

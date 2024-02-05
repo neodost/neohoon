@@ -5,9 +5,8 @@
     import {onMount} from "svelte";
     import authService from "$lib/service/auth-service.js";
 
-
     const setUserLogin = (accessToken) => {
-        authService.saveAccessToken(accessToken)
+        authService.accessToken = accessToken;
         authService.loadUser()
     }
 

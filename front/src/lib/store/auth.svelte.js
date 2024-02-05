@@ -5,7 +5,7 @@ export function createAuth() {
         get auth() {
             return auth;
         },
-        set: (newAuth) => {
+        set auth(newAuth) {
             auth = newAuth;
         }
     }
