@@ -7,5 +7,12 @@ pipeline {
       }
     }
 
+    stage('') {
+      steps {
+        tool 'corretto-17'
+        sh './gradlew clean api:build'
+      }
+    }
+
   }
 }
