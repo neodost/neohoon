@@ -7,10 +7,11 @@ pipeline {
       }
     }
 
-    stage('') {
+    stage('build') {
       steps {
         tool 'corretto-17'
-        sh './gradlew clean api:build'
+        sh '''chmod +x gradlew
+./gradlew clean api:build'''
       }
     }
 
