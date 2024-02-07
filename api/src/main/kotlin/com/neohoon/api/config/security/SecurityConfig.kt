@@ -37,11 +37,10 @@ class SecurityConfig(
             headers { it.disable() }
             cors { it.configurationSource(corsConfigurationSource()) }
             authorizeHttpRequests {
-                it.requestMatchers(*antMatchers("/docs/**")).permitAll()
+                it.requestMatchers("/").permitAll()
 
                 it.requestMatchers(*antMatchers("/login/oauth2/code/**")).permitAll()
                 it.requestMatchers(*antMatchers("/oauth2/authorization/**")).permitAll()
-
                 it.requestMatchers(*antMatchers("/api/v1/**")).authenticated()
                 it.anyRequest().denyAll()
             }
