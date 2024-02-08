@@ -1,7 +1,4 @@
 spring:
-  config:
-    activate:
-      on-profile: dev
   jpa:
     hibernate:
       ddl-auto: update
@@ -45,14 +42,6 @@ spring:
     password: 1234
 
 server:
-  http2:
-    enabled: true
-#  ssl:
-#    enabled: true
-#    key-store: ENC(ZXrb0jf6eXiPZPtuLL2KW/ZsUEAoRD+DwHlwe6Wx2c8=)
-#    key-store-password: ENC(0mVe3J/cfje4Vf3BfRD2tIP6T6Au98gmWO/DDUwieHc=)
-#    key-store-type: PKCS12
-#    enabled-protocols: TLSv1.1,TLSv1.2
   servlet:
     session:
       cookie:
