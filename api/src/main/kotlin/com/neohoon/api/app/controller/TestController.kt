@@ -13,4 +13,7 @@ class TestController {
     @GetMapping("/member/me")
     fun test(@AuthenticationPrincipal user: UserInfo): UserInfo = user
 
+    @GetMapping("/test/ok")
+    fun test2() = "OK"
+
 }

@@ -41,10 +41,13 @@ class SecurityConfig(
 
                 it.requestMatchers(*antMatchers("/login/oauth2/code/**")).permitAll()
                 it.requestMatchers(*antMatchers("/oauth2/authorization/**")).permitAll()
+                it.requestMatchers(*antMatchers("/api/v1/test/ok")).permitAll()
                 it.requestMatchers(*antMatchers("/api/v1/**")).authenticated()
                 it.anyRequest().denyAll()
             }
-//            sessionManagement { it.disable() }
+            sessionManagement {
+                it.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            }
             exceptionHandling {
                 it.accessDeniedHandler(accessDeniedHandler)
                 it.authenticationEntryPoint(authenticationEntryPoint)

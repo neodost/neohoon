@@ -41,6 +41,15 @@ spring:
     username: root
     password: 1234
     driver-class-name: com.mysql.cj.jdbc.Driver
+  mvc:
+    view:
+      prefix:
+      suffix:
+  web:
+    resources:
+      add-mappings: false
+
+
 
 server:
   servlet:
