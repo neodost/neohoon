@@ -10,7 +10,7 @@ spring:
           kakao:
             client-id: ENC(siUK0Q5HEB00uMGGRyfGiqt0HuDVuSWC/fU7MkZ1FXtCozX7KiB4GUJGBsMZn2VS)
             client-secret: ENC(vYx6Uq4rnzetqrxV7wVBDvzRHNwedE0v4BQPOwVi4ys19ZyZdYqaojmnhMVz7MnQ)
-            redirect-uri: https://localhost:8080/login/oauth2/code/kakao
+            redirect-uri: https://drumtong.neohoon.com/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             client-name: Kakao
@@ -19,7 +19,7 @@ spring:
           naver:
             client-id: ENC(BPcCQMvlaocBGPCLOqsZZxZMMHpPecOUUV0FfSvQ0zQ=)
             client-secret: ENC(tJmAYYCd7AJNptCkn3zis0Od2yVgi/Ke)
-            redirect-uri: https://localhost:8080/login/oauth2/code/naver
+            redirect-uri: https://drumtong.neohoon.com/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             client-name: Naver
@@ -65,7 +65,7 @@ neohoon:
         secret: vhfyaV67qrQYuEEfuY9kJaWsIItwTi6UPB4txED6C1jEOL59uSnJL6NU7jJdpq9v6WXMOqO4Ft4gvDZ14MEtVnMwh3riroRuKi5IIHxliJsITJpX0YVpZE4rzT0IEJ6rUbOsdAfoGuVUZKKkb7kHDDAZXtwsTMspZISbNGauphwqq4X05zeZdYBn7MuQOc4IRghZ1k44LcDr57rDXJ2FJPfWOBKujYHRvTxjpEVWv9KFBl8UlyAFz0dLXTeFXSmM
         validity-in-seconds: 5
   front:
-    target: http://localhost:5173
+    target: https://drumtong.neohoon.com
   api:
     version: v1
 logging:

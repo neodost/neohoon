@@ -1,7 +1,7 @@
 import {createAuth} from "$lib/store/auth.svelte.js";
 import client from "$lib/util/axios.js";
 
-const API_SERVER = import.meta.env.VITE_API_SERVER;
+const API_SERVER = import.meta.env.VITE_API_SERVER ?? '';
 
 let store = createAuth();
 
