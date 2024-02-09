@@ -1,14 +1,16 @@
 pipeline {
   agent any
 
-
-
   environment {
     DOCKER_SERVER = 'tcp://172.30.0.100:2375'
     DOCKER_USERNAME = 'kkkqwerasdf123'
     DOCKER_REPOSITORY = 'neohoon'
     DOCKER_TAG_PREFIX = "drumtong-front-"
     DOCKER_IMAGE = "$DOCKER_USERNAME/$DOCKER_REPOSITORY"
+  }
+
+  tools {
+    docker 'docker'
   }
 
   stages {
