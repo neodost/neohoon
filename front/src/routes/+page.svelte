@@ -31,6 +31,6 @@
         </div>
     {/if}
 
-    <a href="/test">asdf</a>
+    <a href="/test">test</a>
 
 </main>
