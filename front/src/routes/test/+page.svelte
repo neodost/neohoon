@@ -1,7 +1,6 @@
-<script>
-
-    import {createAuth} from "$lib/store/auth.svelte.js";
-    import authService from "$lib/service/auth-service.js";
+<script lang="ts">
+    import {createAuth} from "$lib/store/auth/auth.svelte.js";
+    import authService from "$lib/service/auth/auth-service.js";
 
     let store = createAuth();
 

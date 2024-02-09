@@ -40,6 +40,7 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
     implementation(project(":domain"))
+    runtimeOnly("com.h2database:h2")
 }
 
 tasks.withType<KotlinCompile> {

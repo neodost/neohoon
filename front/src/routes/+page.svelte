@@ -1,6 +1,6 @@
-<script xmlns:svelt="http://www.w3.org/1999/html">
-    import authService from "$lib/service/auth-service.js";
-    import {createAuth} from "$lib/store/auth.svelte.js";
+<script lang="ts">
+    import authService from "$lib/service/auth/auth-service.js";
+    import {createAuth} from "$lib/store/auth/auth.svelte.js";
 
     let authStore = createAuth();
 
@@ -8,7 +8,7 @@
         authService.logout()
     }
 
-    const loginByOAuth = (provider) => {
+    const loginByOAuth = (provider: string) => {
         authService.loginByOAuth(provider)
     }
 
@@ -25,9 +25,6 @@
         </div>
         <button on:click={handleLogout}>Logout</button>
     {:else}
-        <label >
-            username: <input type="text" value={authStore.auth?.id}>
-        </label>
         <div>
             <button on:click={() => {loginByOAuth('kakao')}}>kakao</button>
             <button on:click={() => {loginByOAuth('naver')}}>naver</button>

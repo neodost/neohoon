@@ -44,12 +44,12 @@ spring:
 server:
   http2:
     enabled: true
-#  ssl:
-#    enabled: true
-#    key-store: ENC(ZXrb0jf6eXiPZPtuLL2KW/ZsUEAoRD+DwHlwe6Wx2c8=)
-#    key-store-password: ENC(0mVe3J/cfje4Vf3BfRD2tIP6T6Au98gmWO/DDUwieHc=)
-#    key-store-type: PKCS12
-#    enabled-protocols: TLSv1.1,TLSv1.2
+  ssl:
+    enabled: true
+    key-store: ENC(ZXrb0jf6eXiPZPtuLL2KW/ZsUEAoRD+DwHlwe6Wx2c8=)
+    key-store-password: ENC(0mVe3J/cfje4Vf3BfRD2tIP6T6Au98gmWO/DDUwieHc=)
+    key-store-type: PKCS12
+    enabled-protocols: TLSv1.1,TLSv1.2
   servlet:
     session:
       cookie:
@@ -69,7 +69,7 @@ neohoon:
     auth:
       expire-day: 14
       jwt:
-        secret: vhfyaV67qrQYuEEfuY9kJaWsIItwTi6UPB4txED6C1jEOL59uSnJL6NU7jJdpq9v6WXMOqO4Ft4gvDZ14MEtVnMwh3riroRuKi5IIHxliJsITJpX0YVpZE4rzT0IEJ6rUbOsdAfoGuVUZKKkb7kHDDAZXtwsTMspZISbNGauphwqq4X05zeZdYBn7MuQOc4IRghZ1k44LcDr57rDXJ2FJPfWOBKujYHRvTxjpEVWv9KFBl8UlyAFz0dLXTeFXSmM
+        secret: ENC(lly70WjFjzPZMTuepxQrmNv7R9BDa/K4R91foRqQwJin/D2RsNhgPWJ8Mh63bOXeBDIg8SI6y7hvSvItcZ2mvdDJg9rExEnaKa+DbxihtCB7QEgtafBq2QJFG/knMse6Blj75iYem7wZC+1BANsi4uiSaMnv+1zgJCrNHNmaNyYbIPXTvfZ8tCzrSS3/KMDWpcvkHk3fw9zaXVoiIe9rWMpZ3+CTc0okWEQrHX+h+y9mIVYt8iqfUMRdiZIfW+tE1gp8xSYkC6rMExIhLbC7Ur+ZO3DikagdUJrb0D6sM1dJ6C4+WQDKpptjbphkbgIhVoXPmkv3pnXR+6BctHgtAZJZ6wAXcUg2wc4Y8J0/tlU=)
         validity-in-seconds: 5
   front:
     target: http://localhost:5173
