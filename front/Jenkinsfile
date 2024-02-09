@@ -1,7 +1,7 @@
 pipeline {
   agent any
 
-  def image
+
 
   environment {
     DOCKER_SERVER = 'tcp://172.30.0.100:2375'
@@ -21,7 +21,7 @@ pipeline {
     }
     stage('build docker image') {
       steps {
-        image = docker.build '$DOCKER_IMAGE'
+        def image = docker.build '$DOCKER_IMAGE'
       }
     }
 //     stage('login docker') {
