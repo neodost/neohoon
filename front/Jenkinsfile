@@ -21,8 +21,10 @@ pipeline {
     }
     stage('build docker image') {
       steps {
-        script {
-          docker.build(env.DOCKER_IMAGE)
+        dir('front') {
+            script {
+              docker.build(env.DOCKER_IMAGE)
+            }
         }
       }
     }
