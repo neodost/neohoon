@@ -1,3 +1,5 @@
+def image
+
 pipeline {
   agent any
 
@@ -22,7 +24,7 @@ pipeline {
       steps {
         dir('front') {
             script {
-              docker.build(env.DOCKER_IMAGE)
+              image = docker.build(env.DOCKER_IMAGE)
             }
         }
       }
@@ -31,7 +33,8 @@ pipeline {
         steps {
             script {
                 docker.withRegistry('https://registry.hub.docker.com', 'hub.docker.kkkqwerasdf123') {
-                    docker.image(env.DOCKER_IMAGE).push(env.DOCKER_TAG_PREFIX + '-' + env.BUILD_NUMBER)
+                    image.push(env.DOCKER_TAG_PREFIX + '-' + env.BUILD_NUMBER)
+                    image.push(env.DOCKER_TAG_PREFIX)
                 }
             }
         }
