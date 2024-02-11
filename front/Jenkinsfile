@@ -20,15 +20,15 @@ pipeline {
                 git(url: 'https://github.com/kkkqwerasdf123/neohoon', branch: 'develop', changelog: true)
             }
         }
-//         stage('build docker image') {
-//             steps {
-//                 dir('front') {
-//                     script {
-//                         image = docker.build(env.DOCKER_IMAGE)
-//                     }
-//                 }
-//             }
-//         }
+        stage('build docker image') {
+            steps {
+                dir('front') {
+                    script {
+                        image = docker.build(env.DOCKER_IMAGE)
+                    }
+                }
+            }
+        }
         stage('push docker image') {
             steps {
                 script {
