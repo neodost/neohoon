@@ -33,7 +33,6 @@ pipeline {
             steps {
                 dir('front') {
                     script {
-                        image = docker.build(env.DOCKER_IMAGE)
                         docker.withRegistry('https://registry.hub.docker.com', 'hub.docker.kkkqwerasdf123') {
 //                             image.push(env.DOCKER_TAG_PREFIX + '-' + env.BUILD_NUMBER)
                             image.push(env.DOCKER_TAG_PREFIX)
