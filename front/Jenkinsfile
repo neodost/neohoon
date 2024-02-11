@@ -1,44 +1,47 @@
 def image
 
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    DOCKER_USERNAME = 'kkkqwerasdf123'
-    DOCKER_REPOSITORY = 'neohoon'
-    DOCKER_TAG_PREFIX = "drumtong-front-"
-    DOCKER_IMAGE = "$DOCKER_USERNAME/$DOCKER_REPOSITORY"
-  }
-
-  tools {
-    dockerTool 'docker'
-  }
-
-  stages {
-    stage('checkout') {
-      steps {
-        git(url: 'https://github.com/kkkqwerasdf123/neohoon', branch: 'develop', changelog: true)
-      }
+    environment {
+        DOCKER_USERNAME = 'kkkqwerasdf123'
+        DOCKER_REPOSITORY = 'neohoon'
+        DOCKER_TAG_PREFIX = "drumtong-front-"
+        DOCKER_IMAGE = "$DOCKER_USERNAME/$DOCKER_REPOSITORY"
     }
-    stage('build docker image') {
-      steps {
-        dir('front') {
-            script {
-              image = docker.build(env.DOCKER_IMAGE)
+
+    tools {
+        dockerTool 'docker'
+    }
+
+    stages {
+        stage('checkout') {
+            steps {
+                git(url: 'https://github.com/kkkqwerasdf123/neohoon', branch: 'develop', changelog: true)
             }
         }
-      }
-    }
-    stage('push docker image') {
-        steps {
-            script {
-                docker.withRegistry('https://registry.hub.docker.com', 'hub.docker.kkkqwerasdf123') {
-                    image.push(env.DOCKER_TAG_PREFIX + '-' + env.BUILD_NUMBER)
-                    image.push(env.DOCKER_TAG_PREFIX)
+        stage('build docker image') {
+            steps {
+                dir('front') {
+                    script {
+                        image = docker.build(env.DOCKER_IMAGE)
+                    }
                 }
             }
         }
-    }
+        stage('push docker image') {
+            steps {
+                dir('front') {
+                    script {
+                        docker.withRegistry('https://registry.hub.docker.com', 'hub.docker.kkkqwerasdf123') {
+                            image.push(env.DOCKER_TAG_PREFIX + '-' + env.BUILD_NUMBER)
+                            image.push(env.DOCKER_TAG_PREFIX)
+                        }
+                    }
+                }
+
+            }
+        }
 //     stage('login docker') {
 //         steps {
 //             sh 'echo -n $DOCKER_CREDS_PSW | docker login -u $DOCKER_CREDS_USR --passwrod-stdin '
@@ -56,5 +59,5 @@ pipeline {
 //             sh 'docker rmi $DOCKER_IMAGE_LATEST'
 //         }
 //     }
-  }
+    }
 }
