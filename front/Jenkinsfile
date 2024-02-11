@@ -9,10 +9,6 @@ pipeline {
     DOCKER_IMAGE = "$DOCKER_USERNAME/$DOCKER_REPOSITORY"
   }
 
-  tools {
-    dockerTool 'docker'
-  }
-
   stages {
     stage('checkout') {
       steps {
@@ -33,6 +29,7 @@ pipeline {
             script {
                 docker.withRegistry('https://registry.hub.docker.com', 'hub.docker.kkkqwerasdf123') {
                     docker.image(env.DOCKER_IMAGE).push(env.DOCKER_TAG_PREFIX + '-' + env.BUILD_NUMBER)
+                    docker.image(env.DOCKER_IMAGE).push(env.DOCKER_TAG_PREFIX)
                 }
             }
         }
