@@ -32,8 +32,8 @@ pipeline {
         stage('push docker image') {
             steps {
                 script {
-                    image.push(env.DOCKER_TAG_PREFIX)
                     docker.withRegistry('https://registry.hub.docker.com', 'hub.docker.kkkqwerasdf123') {
+                        image = docker.build(env.DOCKER_IMAGE)
 //                             image.push(env.DOCKER_TAG_PREFIX + '-' + env.BUILD_NUMBER)
                         image.push(env.DOCKER_TAG_PREFIX)
                     }
