@@ -10,9 +10,9 @@ pipeline {
         DOCKER_IMAGE = "$DOCKER_USERNAME/$DOCKER_REPOSITORY"
     }
 
-//     tools {
-//         dockerTool 'docker'
-//     }
+    tools {
+        dockerTool 'docker'
+    }
 
     stages {
         stage('checkout') {
