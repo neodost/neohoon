@@ -31,15 +31,15 @@ pipeline {
         }
         stage('push docker image') {
             steps {
-                dir('front') {
-                    script {
-                        docker.withRegistry('https://registry.hub.docker.com', 'hub.docker.kkkqwerasdf123') {
+                script {
+                    tools {
+                        dockerTool 'docker'
+                    }
+                    docker.withRegistry('https://registry.hub.docker.com', 'hub.docker.kkkqwerasdf123') {
 //                             image.push(env.DOCKER_TAG_PREFIX + '-' + env.BUILD_NUMBER)
-                            image.push(env.DOCKER_TAG_PREFIX)
-                        }
+                        image.push(env.DOCKER_TAG_PREFIX)
                     }
                 }
-
             }
         }
 //     stage('login docker') {
