@@ -2,7 +2,6 @@ pipeline {
   agent any
 
   environment {
-    DOCKER_SERVER = 'tcp://172.30.0.100:2375'
     DOCKER_USERNAME = 'kkkqwerasdf123'
     DOCKER_REPOSITORY = 'neohoon'
     DOCKER_TAG_PREFIX = "drumtong-front-"
@@ -33,7 +32,6 @@ pipeline {
             script {
                 docker.withRegistry('https://registry.hub.docker.com', 'hub.docker.kkkqwerasdf123') {
                     docker.image(env.DOCKER_IMAGE).push(env.DOCKER_TAG_PREFIX + '-' + env.BUILD_NUMBER)
-                    docker.image(env.DOCKER_IMAGE).push(env.DOCKER_TAG_PREFIX)
                 }
             }
         }
