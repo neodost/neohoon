@@ -32,10 +32,10 @@ pipeline {
         stage('gradle build') {
             steps {
                 withGradle {
+                    sh 'chmod +x gradlew'
                     sh './gradlew clean api:build'
                 }
             }
-
         }
         stage('build docker image') {
             steps {
