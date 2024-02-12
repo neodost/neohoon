@@ -29,6 +29,11 @@ pipeline {
                 git(url: env.GIT_URL, branch: 'develop', changelog: true)
             }
         }
+        stage('gradle build') {
+            withGradle {
+                sh './gradlew clean api:build'
+            }
+        }
         stage('build docker image') {
             steps {
                 dir(env.MODULE) {
