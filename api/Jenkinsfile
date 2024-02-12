@@ -30,9 +30,12 @@ pipeline {
             }
         }
         stage('gradle build') {
-            withGradle {
-                sh './gradlew clean api:build'
+            steps {
+                withGradle {
+                    sh './gradlew clean api:build'
+                }
             }
+
         }
         stage('build docker image') {
             steps {
