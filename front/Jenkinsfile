@@ -45,7 +45,6 @@ pipeline {
         stage('push docker image') {
             steps {
                 script {
-                    sh 'docker push $DOCKER_IMAGE_CURRENT'
                     sh 'docker push $DOCKER_IMAGE_LATEST'
                 }
             }
@@ -53,14 +52,13 @@ pipeline {
         stage('cleanup docker local image') {
             steps {
                 script {
-                    sh 'docker rmi $DOCKER_IMAGE_CURRENT'
                     sh 'docker rmi $DOCKER_IMAGE_LATEST'
                 }
             }
         }
         stage('update container image') {
             steps {
-                sh 'kubectl rollout restart deployment $KUBE_DEPLOY -n neohoon'
+                sh 'kubectl rollout restart deployment $KUBE_DEPLOY -n $KUBE_NAMESPACE'
             }
         }
     }
