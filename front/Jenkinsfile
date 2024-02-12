@@ -44,22 +44,13 @@ pipeline {
                 }
             }
         }
-//     stage('login docker') {
-//         steps {
-//             sh 'echo -n $DOCKER_CREDS_PSW | docker login -u $DOCKER_CREDS_USR --passwrod-stdin '
-//         }
-//     }
-//     stage('push docker image') {
-//         steps {
-//             sh 'docker push $DOCKER_IMAGE'
-//             sh 'docker push $DOCKER_IMAGE_LATEST'
-//         }
-//     }
-//     stage('remove docker image') {
-//         steps {
-//             sh 'docker rmi $DOCKER_IMAGE'
-//             sh 'docker rmi $DOCKER_IMAGE_LATEST'
-//         }
-//     }
+        stage('cleanup docker local image') {
+            steps {
+                script {
+                    sh 'docker rmi $DOCKER_IMAGE_CURRENT'
+                    sh 'docker rmi $DOCKER_IMAGE_LATEST'
+                }
+            }
+        }
     }
 }
