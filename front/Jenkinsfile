@@ -49,6 +49,7 @@ pipeline {
             steps {
                 script {
                     sh 'docker push $DOCKER_IMAGE_LATEST'
+                    sh 'docker push $DOCKER_IMAGE_CURRENT'
                 }
             }
         }
@@ -56,12 +57,13 @@ pipeline {
             steps {
                 script {
                     sh 'docker rmi $DOCKER_IMAGE_LATEST'
+                    sh 'docker rmi $DOCKER_IMAGE_CURRENT'
                 }
             }
         }
         stage('update container image') {
             steps {
-                sh 'kubectl rollout restart deployment $KUBE_DEPLOY -n $KUBE_NAMESPACE'
+                sh 'kubectl set image deployment $KUBE_DEPLOY *=$DOCKER_IMAGE_CURRENT -n $KUBE_NAMESPACE'
             }
         }
     }
