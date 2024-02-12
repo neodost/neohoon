@@ -64,24 +64,9 @@ pipeline {
         }
         stage('update container image') {
             steps {
-            script {
-                sh 'kubectl '
-            }
-//                 script {
-//                     sh '''
-//                     APISERVER=https://kubernetes.default.svc
-//                     SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
-//                     CACERT=${SERVICEACCOUNT}/ca.crt
-//                     TOKEN=$(cat ${SERVICEACCOUNT}/token)
-//                     JSON_DATA='[{"op":"replace","path":"/spec/template/spec/containers/0/image","value":"'"$DOCKER_IMAGE_CURRENT"'"}]'
-//
-//                     curl -X PATCH ${APISERVER}/apis/apps/v1/namespaces/$KUBE_NAMESPACE/deployments/$KUBE_DEPLOY \
-//                     --cacert ${CACERT} \
-//                     --header "Content-Type: application/json-patch+json" \
-//                     --header "Authorization: Bearer ${TOKEN}" \
-//                     -d "$JSON_DATA"
-//                     '''
-//                 }
+                script {
+                    sh 'kubectl '
+                }
             }
         }
     }
