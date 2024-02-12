@@ -11,9 +11,9 @@ pipeline {
         DOCKER_REPOSITORY_CREDS = credentials('hub.docker.kkkqwerasdf123')
     }
 
-//     tools {
-//         dockerTool 'docker1'
-//     }
+    tools {
+        dockerTool 'docker1'
+    }
 
     stages {
         stage('checkout') {
