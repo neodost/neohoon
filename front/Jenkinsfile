@@ -1,5 +1,9 @@
 pipeline {
-    agent kubernetes
+    agent {
+        kubernetes {
+
+        }
+    }
 
     environment {
         GIT_URL = 'https://github.com/kkkqwerasdf123/neohoon'
