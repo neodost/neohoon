@@ -32,7 +32,7 @@ pipeline {
         stage('build docker image') {
             steps {
                 dir(env.MODULE) {
-                    sh 'docker build . -t $DOCKER_IMAGE'
+                    sh 'docker buildx build --platform linux/arm64,linux/amd64 . -t $DOCKER_IMAGE --no-cache --pull'
                     sh 'docker tag $DOCKER_IMAGE $DOCKER_IMAGE_CURRENT'
                     sh 'docker tag $DOCKER_IMAGE $DOCKER_IMAGE_LATEST'
                 }
