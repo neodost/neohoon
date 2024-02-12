@@ -60,8 +60,8 @@ pipeline {
         }
         stage('update container image') {
             steps {
-                script {
-                    sh 'kubectl '
+                withKubeConfig([namespace: env.KUBE_NAMESPACE]) {
+                    sh 'kubectl rollout restart deployment $KUBE_DEPLOY'
                 }
             }
         }
