@@ -23,8 +23,11 @@ pipeline {
         stage('build docker image') {
             steps {
                 dir('front') {
+
                     script {
-                        image = docker.build(env.DOCKER_IMAGE)
+                        docker.withServer('tcp://172.30.0.100:2375') {
+                            image = docker.build(env.DOCKER_IMAGE)
+                        }
                     }
                 }
             }
