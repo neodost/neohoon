@@ -8,14 +8,14 @@ pipeline {
 
         DOCKER_USERNAME = 'kkkqwerasdf123'
         DOCKER_REPOSITORY = 'neohoon'
-        DOCKER_TAG_PREFIX = "drumtong-front"
+        DOCKER_TAG_PREFIX = "drumtong-api"
         DOCKER_IMAGE = "$DOCKER_USERNAME/$DOCKER_REPOSITORY"
         DOCKER_IMAGE_CURRENT = "$DOCKER_IMAGE:$DOCKER_TAG_PREFIX-$BUILD_NUMBER"
         DOCKER_IMAGE_LATEST = "$DOCKER_IMAGE:$DOCKER_TAG_PREFIX"
         DOCKER_REPOSITORY_CREDENTIALS_ID = 'hub.docker.kkkqwerasdf123'
 
         KUBE_NAMESPACE = 'neohoon'
-        KUBE_DEPLOY = 'neohoon-drumtong-front'
+        KUBE_DEPLOY = 'neohoon-drumtong-api'
 
     }
 
