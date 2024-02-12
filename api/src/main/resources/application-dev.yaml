@@ -53,7 +53,12 @@ spring:
     resources:
       add-mappings: false
 
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+        exclude: threaddump, heapdump
 
 server:
   servlet:
