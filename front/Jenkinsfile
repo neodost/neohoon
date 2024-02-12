@@ -4,7 +4,7 @@ pipeline {
     environment {
         GIT_URL = 'https://github.com/kkkqwerasdf123/neohoon'
 
-        MODULE = 'api'
+        MODULE = 'front'
 
         DOCKER_USERNAME = 'kkkqwerasdf123'
         DOCKER_REPOSITORY = 'neohoon'
