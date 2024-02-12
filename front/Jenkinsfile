@@ -32,7 +32,7 @@ pipeline {
         }
         stage('login docker repository') {
             steps {
-                sh 'docker login $DOCKER_REPOSITORY_CREDS_PSW | docker login -u $DOCKER_REPOSITORY_CREDS_USR --password-stdin'
+                sh 'echo $DOCKER_REPOSITORY_CREDS_PSW | docker login -u $DOCKER_REPOSITORY_CREDS_USR --password-stdin'
             }
         }
         stage('push docker image') {
