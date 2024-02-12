@@ -1,7 +1,7 @@
 FROM amazoncorretto:17-alpine AS builder
 WORKDIR /app
 COPY . .
-RUN chmod +x gradlew
+#RUN chmod +x gradlew
 RUN ./gradlew clean api:build
 
 FROM amazoncorretto:17-alpine
