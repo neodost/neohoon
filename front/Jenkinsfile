@@ -10,6 +10,10 @@ pipeline {
         DOCKER_IMAGE_CURRENT = "$DOCKER_IMAGE:$DOCKER_TAG_PREFIX-$BUILD_NUMBER"
         DOCKER_IMAGE_LATEST = "$DOCKER_IMAGE:$DOCKER_TAG_PREFIX"
         DOCKER_REPOSITORY_CREDENTIALS_ID = 'hub.docker.kkkqwerasdf123'
+
+        KUBE_NAMESPACE = 'neohoon'
+        KUBE_DEPLOY = 'neohoon-drumtong-front'
+
     }
 
     tools {
@@ -51,6 +55,25 @@ pipeline {
                 script {
                     sh 'docker rmi $DOCKER_IMAGE_CURRENT'
                     sh 'docker rmi $DOCKER_IMAGE_LATEST'
+                }
+            }
+        }
+        stage('update container image') {
+            steps {
+                script {
+                    sh '''
+                    APISERVER=https://kubernetes.default.svc
+                    SERVICEACCOUNT=/var/run/secrets/kubernetes.io/serviceaccount
+                    CACERT=${SERVICEACCOUNT}/ca.crt
+                    TOKEN=$(cat ${SERVICEACCOUNT}/token)
+                    JSON_DATA='[{"op":"replace","path":"/spec/template/spec/containers/0/image","value":"'"$DOCKER_IMAGE_CURRENT"'"}]'
+
+                    curl -X PATCH ${APISERVER}/apis/apps/v1/namespaces/$KUBE_NAMESPACE/deployments/$KUBE_DEPLOY \
+                    --cacert ${CACERT} \
+                    --header "Content-Type: application/json-patch+json" \
+                    --header "Authorization: Bearer ${TOKEN}" \
+                    -d "$JSON_DATA"
+                    '''
                 }
             }
         }
