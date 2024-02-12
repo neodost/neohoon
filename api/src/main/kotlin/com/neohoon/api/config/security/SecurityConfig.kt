@@ -37,7 +37,7 @@ class SecurityConfig(
             headers { it.disable() }
             cors { it.configurationSource(corsConfigurationSource()) }
             authorizeHttpRequests {
-                it.requestMatchers("/").permitAll()
+                it.requestMatchers("/actuator/**").permitAll()
 
                 it.requestMatchers(*antMatchers("/login/oauth2/code/**")).permitAll()
                 it.requestMatchers(*antMatchers("/oauth2/authorization/**")).permitAll()
