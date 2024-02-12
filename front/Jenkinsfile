@@ -60,9 +60,7 @@ pipeline {
         }
         stage('update container image') {
             steps {
-                withKubeConfig([namespace: env.KUBE_NAMESPACE]) {
-                    sh 'kubectl rollout restart deployment $KUBE_DEPLOY'
-                }
+                sh 'kubectl rollout restart deployment $KUBE_DEPLOY -n neohoon'
             }
         }
     }
