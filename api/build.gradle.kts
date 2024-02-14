@@ -35,11 +35,15 @@ dependencies {
     // https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter
     implementation(group = "com.github.ulisesbocchio", name = "jasypt-spring-boot-starter", version = "3.0.5")
 
+    // https://mvnrepository.com/artifact/io.github.oshai/kotlin-logging-jvm
+    implementation("io.github.oshai:kotlin-logging-jvm:6.0.3")
+
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     runtimeOnly("com.mysql:mysql-connector-j")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
+    implementation(project(":core"))
     implementation(project(":domain"))
     runtimeOnly("com.h2database:h2")
 }
