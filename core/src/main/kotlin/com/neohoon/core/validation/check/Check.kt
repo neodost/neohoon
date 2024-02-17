@@ -3,10 +3,10 @@ package com.neohoon.core.validation.check
 import jakarta.validation.Constraint
 import jakarta.validation.Payload
 import kotlin.annotation.AnnotationRetention.RUNTIME
-import kotlin.annotation.AnnotationTarget.*
+import kotlin.annotation.AnnotationTarget.CLASS
 import kotlin.reflect.KClass
 
-@Target(FIELD, CONSTRUCTOR, PROPERTY, VALUE_PARAMETER)
+@Target(CLASS)
 @Retention(RUNTIME)
 @Constraint(validatedBy = [CheckValidator::class])
 annotation class Check(

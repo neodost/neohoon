@@ -69,7 +69,7 @@ jasypt:
 neohoon:
   security:
     cors:
-      allowed-origins: http://localhost:5173,https://drumtong.neohoon.com
+      allowed-origins: ""
     auth:
       expire-day: 14
       jwt:
