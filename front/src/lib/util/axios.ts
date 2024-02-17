@@ -1,31 +1,31 @@
 import axios from "axios";
-import authService from "$lib/service/auth-service.js";
+import authService from "$lib/service/auth/auth-service";
 
-const client = axios.create({
+const api = axios.create({
     baseURL: `/api/v1`,
-    credentials: true,
+    withCredentials: true,
 });
 
-client.interceptors.request.use(
+api.interceptors.request.use(
     (config) => {
         config.headers.Authorization = `Bearer ${authService.accessToken}`;
         return config;
     },
+
     (error) => {
         return Promise.reject(error);
     }
 );
 
-client.interceptors.response.use(
+api.interceptors.response.use(
     (response) => {
-        let authorization = response.headers.get('Authorization');
+        let authorization: string = response.headers['authorization'];
         if (authorization) {
             authService.accessToken = authorization;
         }
         return response;
     },
     (error) => {
-
         if (error.response?.status) {
             switch (error.response.status) {
                 case 400:
@@ -43,4 +43,4 @@ client.interceptors.response.use(
     }
 )
 
-export default client;
+export default api;

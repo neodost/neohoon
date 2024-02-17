@@ -1,16 +1,27 @@
 package com.neohoon.api.app.controller
 
-import com.neohoon.api.config.security.userdetails.UserInfo
-import org.springframework.security.core.annotation.AuthenticationPrincipal
+import io.github.oshai.kotlinlogging.KotlinLogging
+import org.jasypt.encryption.StringEncryptor
+import org.springframework.context.annotation.Profile
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@RestController
-@RequestMapping("/api/\${neohoon.api.version}")
-class TestController {
+private val log = KotlinLogging.logger {}
 
-    @GetMapping("/member/me")
-    fun test(@AuthenticationPrincipal user: UserInfo): UserInfo = user
+@RestController
+@RequestMapping("/api/v1/test")
+@Validated
+@Profile("local")
+class TestController(
+    private val jasyptStringEncryptor: StringEncryptor
+) {
+    @GetMapping("/encrypt")
+    fun encrypt(@RequestBody text: String): String = jasyptStringEncryptor.encrypt(text)
+
+    @GetMapping("/decrypt")
+    fun decrypt(@RequestBody text: String): String = jasyptStringEncryptor.decrypt(text)
 
 }

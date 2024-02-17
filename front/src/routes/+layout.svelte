@@ -1,6 +1,5 @@
-<script>
-
-    import authService from "$lib/service/auth-service.js";
+<script lang="ts">
+    import authService from "$lib/service/auth/auth-service.js";
 
     let initialized = $state(false);
 
