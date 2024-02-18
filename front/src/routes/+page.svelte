@@ -18,7 +18,7 @@
 
     {#if !!authStore.auth}
         <div>
-            logged in : {authStore.auth.id}
+            logged in : {authStore.auth.sub}
         </div>
         <div>
             roles: {authStore.auth.authorities.map(it => it.authority).join(',')}
@@ -31,6 +31,7 @@
         </div>
     {/if}
 
+    <a href="/join">join</a>
     <a href="/test">test</a>
 
 </main>

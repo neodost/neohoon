@@ -3,7 +3,6 @@ package com.neohoon.api.config.security
 import com.neohoon.api.config.security.filter.JwtFilter
 import com.neohoon.api.config.security.handler.CustomAccessDeniedHandler
 import com.neohoon.api.config.security.handler.CustomAuthenticationEntryPoint
-import com.neohoon.api.config.security.handler.Oauth2SuccessHandler
 import com.neohoon.api.config.security.service.AuthService
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
@@ -23,7 +22,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 class SecurityConfig(
     private val authenticationEntryPoint: CustomAuthenticationEntryPoint,
     private val accessDeniedHandler: CustomAccessDeniedHandler,
-    private val oauth2SuccessHandler: Oauth2SuccessHandler,
     private val jwtFilter: JwtFilter,
 
     @Value("\${neohoon.security.cors.allowed-origins}")
@@ -38,9 +36,6 @@ class SecurityConfig(
             cors { it.configurationSource(corsConfigurationSource()) }
             authorizeHttpRequests {
                 it.requestMatchers("/actuator/**").permitAll()
-
-                it.requestMatchers(*antMatchers("/login/oauth2/code/**")).permitAll()
-                it.requestMatchers(*antMatchers("/oauth2/authorization/**")).permitAll()
                 it.requestMatchers(*antMatchers("/api/v1/test/**")).permitAll()
                 it.requestMatchers(*antMatchers("/api/v1/**")).authenticated()
                 it.anyRequest().denyAll()
@@ -51,9 +46,6 @@ class SecurityConfig(
             exceptionHandling {
                 it.accessDeniedHandler(accessDeniedHandler)
                 it.authenticationEntryPoint(authenticationEntryPoint)
-            }
-            oauth2Login {
-                it.successHandler(oauth2SuccessHandler)
             }
             addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
             build()

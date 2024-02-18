@@ -24,6 +24,12 @@ dependencies {
 
     // https://mvnrepository.com/artifact/io.github.oshai/kotlin-logging-jvm
     implementation("io.github.oshai:kotlin-logging-jvm:6.0.3")
+    implementation(group = "io.jsonwebtoken", name = "jjwt-api", version = "0.12.3")
+    implementation(group = "io.jsonwebtoken", name = "jjwt-impl", version = "0.12.3")
+    implementation(group = "io.jsonwebtoken", name = "jjwt-jackson", version = "0.12.3")
+
+    // https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter
+    implementation(group = "com.github.ulisesbocchio", name = "jasypt-spring-boot-starter", version = "3.0.5")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }

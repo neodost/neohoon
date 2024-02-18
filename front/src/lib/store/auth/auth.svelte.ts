@@ -2,8 +2,8 @@ interface Authority {
     authority: string
 }
 interface Auth {
-    id: number,
-    name: string,
+    username: string,
+    vk: string,
     authorities: Authority[]
 }
 

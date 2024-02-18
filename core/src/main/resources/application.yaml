@@ -1,0 +1,6 @@
+neohoon:
+  security:
+    auth:
+      jwt:
+        secret: ENC(lly70WjFjzPZMTuepxQrmNv7R9BDa/K4R91foRqQwJin/D2RsNhgPWJ8Mh63bOXeBDIg8SI6y7hvSvItcZ2mvdDJg9rExEnaKa+DbxihtCB7QEgtafBq2QJFG/knMse6Blj75iYem7wZC+1BANsi4uiSaMnv+1zgJCrNHNmaNyYbIPXTvfZ8tCzrSS3/KMDWpcvkHk3fw9zaXVoiIe9rWMpZ3+CTc0okWEQrHX+h+y9mIVYt8iqfUMRdiZIfW+tE1gp8xSYkC6rMExIhLbC7Ur+ZO3DikagdUJrb0D6sM1dJ6C4+WQDKpptjbphkbgIhVoXPmkv3pnXR+6BctHgtAZJZ6wAXcUg2wc4Y8J0/tlU=)
+        validity-in-seconds: 5

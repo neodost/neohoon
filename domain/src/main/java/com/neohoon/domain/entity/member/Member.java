@@ -22,27 +22,22 @@ public class Member extends BaseEntity {
     @Column(name = "member_id", nullable = false, updatable = false)
     private Long id;
 
-    @Column(nullable = false, updatable = false, unique = true, length = 512)
-    private String username;
-
     @Column(nullable = false, updatable = false, unique = true, length = 320)
     private String email;
 
-    @Column(length = 30)
-    private String name;
+    @Embedded
+    private MemberName name;
+
+    private boolean verifyEmail = false;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     private final List<MemberRole> roles = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
-    private List<MemberOauth> memberOauth = new ArrayList<>();
-
-    public Member(String username, String email) {
-        this.username = username;
+    public Member(String email) {
         this.email = email;
     }
 
-    public void addOauth(MemberOauth oauth) {
-        this.memberOauth.add(oauth);
+    public void verifyEmail() {
+        this.verifyEmail = true;
     }
 }

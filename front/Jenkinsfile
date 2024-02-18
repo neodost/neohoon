@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        GIT_URL = 'https://github.com/kkkqwerasdf123/neohoon'
+        GIT_URL = 'https://github.com/neodost/neohoon'
 
         MODULE = 'front'
 

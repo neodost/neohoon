@@ -1,7 +1,8 @@
 import {createAuth} from "$lib/store/auth/auth.svelte";
 import api from '$lib/util/axios';
+import axios from "axios";
 
-const API_SERVER: string = import.meta.env.VITE_API_SERVER ?? '';
+const API_SERVER: string = import.meta.env.VITE_AUTH_SERVER ?? '';
 const ACCESS_TOKEN_NAME: string = 'accessToken';
 
 let store = createAuth();
@@ -34,6 +35,29 @@ export default {
             console.error(e);
             logout();
         }
+    },
+
+    refreshAccessToken: async function(error: any): Promise<any> {
+        let accessToken: string | null  = this.accessToken;
+        if (!localStorage.getItem(ACCESS_TOKEN_NAME)) {
+            logout();
+            return Promise.reject(error);
+        }
+        return axios.post('/api/v1/authenticate/refresh', null, {
+            headers: {
+                'Authorization' : `Bearer ${accessToken}`
+            }
+        })
+            .then(response => {
+                console.log(response);
+                if (response.status === 200) {
+                    this.accessToken = response.headers['authorization'];
+                    Promise.resolve();
+                } else {
+                    logout()
+                    Promise.reject(error);
+                }
+            })
     },
 
     set accessToken(accessToken: string) {

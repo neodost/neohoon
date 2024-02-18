@@ -27,12 +27,12 @@ public class MemberToken {
     private LocalDateTime expireDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member_id", nullable = false, updatable = false)
-    private Member member;
+    @JoinColumn(name = "member_login_id", nullable = false, updatable = false)
+    private MemberLogin login;
 
-    public MemberToken(Member member, String validationKey, int expireDay) {
+    public MemberToken(MemberLogin login, String validationKey, int expireDay) {
         this.token = UUID.randomUUID().toString();
-        this.member = member;
+        this.login = login;
         this.validationKey = validationKey;
         this.expireDate = LocalDateTime.now().plusDays(expireDay);
     }

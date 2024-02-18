@@ -25,14 +25,18 @@ api.interceptors.response.use(
         }
         return response;
     },
-    (error) => {
+    async (error) => {
+        const originalRequest = error.config;
         if (error.response?.status) {
             switch (error.response.status) {
                 case 400:
                     break;
                 case 401:
-                    authService.logout();
-                    break;
+                    return authService.refreshAccessToken(error)
+                        .then(() => {
+                            originalRequest._retry = true;
+                            return api(originalRequest)
+                        });
                 case 403:
                     alert(403);
                     break;

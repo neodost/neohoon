@@ -1,8 +1,8 @@
 package com.neohoon.api.config.security.filter
 
-import com.neohoon.api.config.security.authentication.TokenProvider
-import com.neohoon.api.config.security.authentication.TokenValidateState.*
 import com.neohoon.api.config.security.service.AuthService
+import com.neohoon.core.authentication.token.TokenProvider
+import com.neohoon.core.authentication.token.TokenValidateState.*
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
@@ -27,59 +27,30 @@ class JwtFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
-
         if (isIgnoreRequest(request)) {
-
             log.debug("request ignored JWT filter")
-
             filterChain.doFilter(request, response)
             return
         }
 
         val accessToken = obtainAccessToken(request)
-
         if (StringUtils.hasText(accessToken)) {
             when (tokenProvider.accessTokenValidState(accessToken)) {
-
                 VALID -> authService.setAuthentication(accessToken)
-
-                EXPIRED -> {
-                    val refreshToken = obtainRefreshToken(request)
-
-                    log.debug("refreshToken in cookie : {}", refreshToken)
-
-                    authService.refreshToken(refreshToken, accessToken)
-                        ?.let {
-                            response.setHeader(AuthService.AUTHORIZATION_HEADER_NAME, it.accessToken)
-                            response.setHeader("Set-Cookie", authService.getRefreshTokenCookie(it.refreshToken).toString())
-
-                            log.debug("token refreshed")
-                        }
-                }
-
+                EXPIRED -> {}
                 INVALID -> {}
             }
         }
-
         filterChain.doFilter(request, response)
     }
 
     private fun obtainAccessToken(request: HttpServletRequest): String {
-
         val bearerToken = request.getHeader(AuthService.AUTHORIZATION_HEADER_NAME)
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7)
         }
         return ""
-    }
-
-    private fun obtainRefreshToken(request: HttpServletRequest): String {
-        return (request.cookies ?: arrayOf())
-            .filter { it.name == AuthService.REFRESH_TOKEN_COOKIE_NAME }
-            .map { it.value }
-            .firstOrNull()
-            ?: ""
     }
 
     private fun isIgnoreRequest(request: HttpServletRequest): Boolean {

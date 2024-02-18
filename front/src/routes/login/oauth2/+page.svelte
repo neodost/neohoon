@@ -7,6 +7,9 @@
     const setUserLogin = (accessToken: string) => {
         authService.accessToken = accessToken;
         authService.loadUser()
+            .catch(e => {
+                console.error(e);
+            })
     }
 
     onMount(() => {
