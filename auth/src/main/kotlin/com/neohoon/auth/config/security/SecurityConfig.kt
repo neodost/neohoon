@@ -2,6 +2,7 @@ package com.neohoon.auth.config.security
 
 import com.neohoon.auth.config.security.handler.CustomAccessDeniedHandler
 import com.neohoon.auth.config.security.handler.CustomAuthenticationEntryPoint
+import com.neohoon.auth.config.security.handler.Oauth2FailureHandler
 import com.neohoon.auth.config.security.handler.Oauth2SuccessHandler
 import com.neohoon.auth.config.security.service.AuthService
 import org.springframework.beans.factory.annotation.Value
@@ -21,7 +22,7 @@ class SecurityConfig(
     private val authenticationEntryPoint: CustomAuthenticationEntryPoint,
     private val accessDeniedHandler: CustomAccessDeniedHandler,
     private val oauth2SuccessHandler: Oauth2SuccessHandler,
-
+    private val oauth2FailureHandler: Oauth2FailureHandler,
     @Value("\${neohoon.security.cors.allowed-origins}")
     private val allowedOrigins: Array<String>
 ) {
@@ -45,6 +46,7 @@ class SecurityConfig(
             }
             oauth2Login {
                 it.successHandler(oauth2SuccessHandler)
+                it.failureHandler(oauth2FailureHandler)
             }
             build()
         }
