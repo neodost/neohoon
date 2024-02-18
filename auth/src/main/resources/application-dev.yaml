@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/mydost
+    url: jdbc:mysql://mysql:3306/neohoon?characterEncoding=UTF-8
     username: root
     password: 1234
   jpa:
@@ -8,6 +8,10 @@ spring:
     hibernate:
       ddl-auto: update
     open-in-view: false
+  data:
+    redis:
+      host: neohoon-redis
+      port: 6379
   security:
     oauth2:
       client:
@@ -15,7 +19,7 @@ spring:
           kakao:
             client-id: ENC(siUK0Q5HEB00uMGGRyfGiqt0HuDVuSWC/fU7MkZ1FXtCozX7KiB4GUJGBsMZn2VS)
             client-secret: ENC(vYx6Uq4rnzetqrxV7wVBDvzRHNwedE0v4BQPOwVi4ys19ZyZdYqaojmnhMVz7MnQ)
-            redirect-uri: https://localhost:${server.port}/login/oauth2/code/kakao
+            redirect-uri: https://drumtong.neohoon.com/login/oauth2/code/kakao
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             client-name: Kakao
@@ -24,7 +28,7 @@ spring:
           naver:
             client-id: ENC(BPcCQMvlaocBGPCLOqsZZxZMMHpPecOUUV0FfSvQ0zQ=)
             client-secret: ENC(tJmAYYCd7AJNptCkn3zis0Od2yVgi/Ke)
-            redirect-uri: https://localhost:${server.port}/login/oauth2/code/naver
+            redirect-uri: https://drumtong.neohoon.com/login/oauth2/code/naver
             authorization-grant-type: authorization_code
             client-authentication-method: client_secret_post
             client-name: Naver
@@ -48,27 +52,21 @@ spring:
 server:
   http2:
     enabled: true
-  ssl:
-    enabled: true
-    key-store: keystore.p12
-    key-store-password: 123456
-    key-store-type: PKCS12
-    enabled-protocols: TLSv1.1,TLSv1.2
-  port: 8081
 
 neohoon:
   security:
     cors:
-      allowed-origins: "http://localhost:5173"
+      allowed-origins: ""
     auth:
       expire-day: 14
       jwt:
-        secret: ENC(lly70WjFjzPZMTuepxQrmNv7R9BDa/K4R91foRqQwJin/D2RsNhgPWJ8Mh63bOXeBDIg8SI6y7hvSvItcZ2mvdDJg9rExEnaKa+DbxihtCB7QEgtafBq2QJFG/knMse6Blj75iYem7wZC+1BANsi4uiSaMnv+1zgJCrNHNmaNyYbIPXTvfZ8tCzrSS3/KMDWpcvkHk3fw9zaXVoiIe9rWMpZ3+CTc0okWEQrHX+h+y9mIVYt8iqfUMRdiZIfW+tE1gp8xSYkC6rMExIhLbC7Ur+ZO3DikagdUJrb0D6sM1dJ6C4+WQDKpptjbphkbgIhVoXPmkv3pnXR+6BctHgtAZJZ6wAXcUg2wc4Y8J0/tlU=)
+        secret: ENC(skjfQ534kaYzuVEpxzv+ZAK4M87C+nwVOO7r/ITBP2i1yf/+WM6K2RMGAjx338HBzCmTwPrFNHRxJkFxr1QRxYy80+wKjzHXsJ7FaTSRLB65R1qBN65ScHme0gUhA3Ugm9UCwMJjodAkZL+MCGCfQSE7+dPofh7myk6Mn0beZvPlu4ks6QltnY0AiIUWxYWfM+In31A6YijpI9RX+2CSsmPqGG9QbGxczDlTd/aEe6D67Z5vFe8OmUxBEU6JZJkwwzlrlvkMQKSt2B0ddM1R0R9XzBYcBXj6ZnnTevP59Fc4Xh15xgbcPbVqPRq+Gx4pwn85f6NrO2/b5lmQBqgDe+S0prkBzKwjVSISsrBhYaQ=)
         validity-in-seconds: 5
   front:
-    target: http://localhost:5173
+    target: https://drumtong.neohoon.com
   api:
     version: v1
+
 logging:
   level:
     com.neohoon: debug
