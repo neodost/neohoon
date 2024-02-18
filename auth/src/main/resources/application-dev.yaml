@@ -70,3 +70,13 @@ neohoon:
 logging:
   level:
     com.neohoon: debug
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+        exclude: threaddump, heapdump
+info:
+  contact:
+    email: kkkqwerasdf123@naver.com
