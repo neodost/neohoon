@@ -49,7 +49,6 @@ neohoon:
     cors:
       allowed-origins: http://localhost:5173,https://drumtong.neohoon.com
     auth:
-      expire-day: 14
       jwt:
         secret: vhfyaV67qrQYuEEfuY9kJaWsIItwTi6UPB4txED6C1jEOL59uSnJL6NU7jJdpq9v6WXMOqO4Ft4gvDZ14MEtVnMwh3riroRuKi5IIHxliJsITJpX0YVpZE4rzT0IEJ6rUbOsdAfoGuVUZKKkb7kHDDAZXtwsTMspZISbNGauphwqq4X05zeZdYBn7MuQOc4IRghZ1k44LcDr57rDXJ2FJPfWOBKujYHRvTxjpEVWv9KFBl8UlyAFz0dLXTeFXSmM
         validity-in-seconds: 5

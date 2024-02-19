@@ -2,24 +2,26 @@ import {createAuth} from "$lib/store/auth/auth.svelte";
 import api from '$lib/util/axios';
 import axios from "axios";
 
-const API_SERVER: string = import.meta.env.VITE_AUTH_SERVER ?? '';
+const AUTH_SERVER: string = import.meta.env.VITE_AUTH_SERVER ?? '';
 const ACCESS_TOKEN_NAME: string = 'accessToken';
 
 let store = createAuth();
 
-const logout = () => {
-    localStorage.removeItem(ACCESS_TOKEN_NAME);
-    store.auth = null;
+const logout = async () => {
+    return axios.post('/api/v1/authenticate/logout')
+        .finally(() => {
+            localStorage.removeItem(ACCESS_TOKEN_NAME);
+            store.auth = null;
+        })
 }
 
 export default {
     loginByOAuth: (provider: string): void => {
-        location.href = `${API_SERVER}/oauth2/authorization/${provider}`
+        location.href = `${AUTH_SERVER}/oauth2/authorization/${provider}`
     },
 
-    logout: (): void => {
-        localStorage.removeItem(ACCESS_TOKEN_NAME);
-        store.auth = null;
+    logout: async (): Promise<any> => {
+        return logout();
     },
 
     loadUser: async (): Promise<any> => {
@@ -33,14 +35,14 @@ export default {
             return response.data;
         } catch (e) {
             console.error(e);
-            logout();
+            await logout();
         }
     },
 
     refreshAccessToken: async function(error: any): Promise<any> {
         let accessToken: string | null  = this.accessToken;
         if (!localStorage.getItem(ACCESS_TOKEN_NAME)) {
-            logout();
+            await logout();
             return Promise.reject(error);
         }
         return axios.post('/api/v1/authenticate/refresh', null, {
@@ -54,7 +56,6 @@ export default {
                     this.accessToken = response.headers['authorization'];
                     Promise.resolve();
                 } else {
-                    logout()
                     Promise.reject(error);
                 }
             })

@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.RestController
 private val log = KotlinLogging.logger {}
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/authenticate")
 class AuthController(
     private val authService: AuthService
 ) {
 
-    @PostMapping("/authenticate/refresh")
+    @PostMapping("/refresh")
     fun refreshAuth(
         request: HttpServletRequest
     ): ResponseEntity<Unit> {
@@ -27,17 +27,27 @@ class AuthController(
         val refreshToken = obtainRefreshToken(request)
         log.debug { "refreshToken in cookie : $refreshToken" }
 
-        return authService.refreshToken(refreshToken, accessToken)
-            ?.let {
-                log.debug { "token refreshed" }
-                ResponseEntity.ok()
-                    .headers { header ->
-                        header.add(AuthService.AUTHORIZATION_HEADER_NAME, it.accessToken)
-                        header.add("Set-Cookie", authService.getRefreshTokenCookie(it.refreshToken).toString())
-                    }
-                    .build()
-            }
-            ?: let { ResponseEntity.status(HttpStatus.UNAUTHORIZED).build() }
+        return authService.refreshToken(refreshToken, accessToken)?.let {
+            log.debug { "token refreshed" }
+            ResponseEntity.ok().headers { header ->
+                header.add(AuthService.AUTHORIZATION_HEADER_NAME, it.accessToken)
+                header.add("Set-Cookie", authService.getRefreshTokenCookie(it.refreshToken).toString())
+            }.build()
+        } ?: let {
+            ResponseEntity.status(HttpStatus.UNAUTHORIZED).headers { header ->
+                header.add("Set-Cookie", authService.deleteRefreshTokenCookie(refreshToken).toString())
+            }.build()
+        }
+    }
+
+    @PostMapping("/logout")
+    fun logout(request: HttpServletRequest): ResponseEntity<Unit> {
+        val refreshToken = obtainRefreshToken(request)
+        log.debug { "refreshToken for logout in cookie : $refreshToken" }
+
+        return ResponseEntity.ok().headers { header ->
+            header.add("Set-Cookie", authService.deleteRefreshTokenCookie(refreshToken).toString())
+        }.build()
     }
 
     private fun obtainAccessToken(request: HttpServletRequest): String {

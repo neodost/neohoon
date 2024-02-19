@@ -9,7 +9,7 @@ import java.util.*
 class UserInfo(
     username: String,
     authorities: MutableCollection<out GrantedAuthority>,
-    validationKey: String = UUID.randomUUID().toString().substring(0..7),
+    validationKey: String = UUID.randomUUID().toString(),
     attribute: OAuth2Attribute? = null,
 ) : UserDetails, OAuth2User {
 

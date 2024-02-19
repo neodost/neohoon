@@ -5,16 +5,10 @@ import org.springframework.security.core.userdetails.UserDetails
 import java.util.*
 
 class UserInfo(
-    username: String,
-    authorities: MutableCollection<out GrantedAuthority>,
-    validationKey: String = UUID.randomUUID().toString().substring(0..7),
+    private val username: String,
+    private val authorities: MutableCollection<out GrantedAuthority>,
+    private val validationKey: String = UUID.randomUUID().toString().substring(0..7),
 ) : UserDetails {
-
-    private val username = username
-
-    private val authorities: MutableCollection<out GrantedAuthority> = authorities
-
-    val validationKey: String = validationKey
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = authorities
 

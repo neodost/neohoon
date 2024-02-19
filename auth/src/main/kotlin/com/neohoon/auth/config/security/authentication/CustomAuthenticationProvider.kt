@@ -2,7 +2,6 @@ package com.neohoon.auth.config.security.authentication
 
 import com.neohoon.auth.config.security.userdetails.CustomUserDetailsService
 import com.neohoon.auth.exception.security.PasswordNotMatchesException
-import com.neohoon.core.exception.client.AuthenticationFailException
 import org.springframework.security.authentication.AuthenticationProvider
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Component
 class CustomAuthenticationProvider(
     val userDetailsService: CustomUserDetailsService,
     val passwordEncoder: PasswordEncoder
-): AuthenticationProvider {
+) : AuthenticationProvider {
 
     override fun authenticate(authentication: Authentication): Authentication {
 

@@ -1,8 +1,9 @@
 package com.neohoon.auth.config.security.oauth.attribute
 
 import com.neohoon.domain.enums.member.Provider
+import java.io.Serializable
 
-sealed class OAuth2Attribute(val attributes: MutableMap<String, Any>) {
+sealed class OAuth2Attribute(val attributes: MutableMap<String, Any>) : Serializable {
     abstract val providerId: String
     abstract val provider: Provider
     abstract val email: String

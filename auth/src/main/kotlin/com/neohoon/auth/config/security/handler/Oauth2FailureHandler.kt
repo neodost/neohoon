@@ -1,5 +1,6 @@
 package com.neohoon.auth.config.security.handler
 
+import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.springframework.beans.factory.annotation.Value
@@ -8,6 +9,8 @@ import org.springframework.security.core.AuthenticationException
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler
 import org.springframework.stereotype.Component
 import org.springframework.web.util.UriComponentsBuilder
+
+private val log = KotlinLogging.logger {}
 
 @Component
 class Oauth2FailureHandler(
@@ -20,8 +23,9 @@ class Oauth2FailureHandler(
         response: HttpServletResponse,
         exception: AuthenticationException?
     ) {
+        log.error(exception) { "authenticationFailed : ${exception?.message}" }
         with (response) {
-            response.sendError(HttpStatus.UNAUTHORIZED.value())
+            //TODO: html page
             sendRedirect(UriComponentsBuilder.fromUriString(frontTarget).toUriString())
         }
     }

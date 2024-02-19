@@ -1,6 +1,6 @@
 package com.neohoon.auth.config.security.dto
 
 data class LoginRequest(
-    val username: String,
+    val loginId: String,
     val password: String,
 )

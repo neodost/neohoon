@@ -37,7 +37,6 @@ class Oauth2SuccessHandler(
                 sendRedirect(getRedirectUrl(it.accessToken))
             }
         }
-
     }
 
     private fun getRedirectUrl(accessToken: String): String {

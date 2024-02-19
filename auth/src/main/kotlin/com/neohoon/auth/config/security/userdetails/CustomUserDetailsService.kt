@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 
 @Component
 class CustomUserDetailsService(
@@ -18,6 +19,7 @@ class CustomUserDetailsService(
 
     private val log: Logger = LoggerFactory.getLogger(this::class.java)
 
+    @Transactional(readOnly = true)
     override fun loadUserByUsername(username: String): UserDetails {
 
         log.debug("loadUserByUsername / username: {}", username)
