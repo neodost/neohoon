@@ -23,14 +23,13 @@
         <div>
             roles: {authStore.auth.authorities.map(it => it.authority).join(',')}
         </div>
-        <button on:click={handleLogout}>Logout</button>
     {:else}
         <div>
             <button on:click={() => {loginByOAuth('kakao')}}>kakao</button>
             <button on:click={() => {loginByOAuth('naver')}}>naver</button>
         </div>
     {/if}
-
+    <button on:click={handleLogout}>Logout</button>
     <a href="/join">join</a>
     <a href="/test">test</a>
 

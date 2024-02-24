@@ -19,3 +19,5 @@ export function createAuth(): {auth: Auth | null} {
         }
     }
 }
+
+export type {Auth, Authority}

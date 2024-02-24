@@ -47,6 +47,10 @@ class SecurityConfig(
                 it.accessDeniedHandler(accessDeniedHandler)
                 it.authenticationEntryPoint(authenticationEntryPoint)
             }
+
+            formLogin {
+                it.disable()
+            }
             addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
             build()
         }

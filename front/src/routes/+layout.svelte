@@ -6,7 +6,7 @@
     $effect(() => {
         if (!initialized) {
             authService.loadUser()
-                .then(() => {
+                .finally(() => {
                     initialized = true;
                 })
         }

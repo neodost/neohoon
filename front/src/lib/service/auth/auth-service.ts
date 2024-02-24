@@ -1,14 +1,17 @@
-import {createAuth} from "$lib/store/auth/auth.svelte";
+import {type Auth, createAuth} from "$lib/store/auth/auth.svelte";
 import api from '$lib/util/axios';
 import axios from "axios";
 
 const AUTH_SERVER: string = import.meta.env.VITE_AUTH_SERVER ?? '';
 const ACCESS_TOKEN_NAME: string = 'accessToken';
 
-let store = createAuth();
+const store = createAuth();
 
-const logout = async () => {
+const logout = async (): Promise<null> => {
     return axios.post('/api/v1/authenticate/logout')
+        .then(() => {
+            return null;
+        })
         .finally(() => {
             localStorage.removeItem(ACCESS_TOKEN_NAME);
             store.auth = null;
@@ -20,44 +23,41 @@ export default {
         location.href = `${AUTH_SERVER}/oauth2/authorization/${provider}`
     },
 
-    logout: async (): Promise<any> => {
+    logout: async (): Promise<null> => {
         return logout();
     },
 
-    loadUser: async (): Promise<any> => {
+    loadUser: async (): Promise<Auth> => {
         if (!localStorage.getItem(ACCESS_TOKEN_NAME)) {
-            return Promise.resolve();
+            return Promise.reject('accessToken is missing');
         }
 
-        try {
-            const response = await api.get('/member/me');
-            store.auth = {...response.data};
-            return response.data;
-        } catch (e) {
-            console.error(e);
-            await logout();
-        }
+        return api.get('/member/me')
+            .then(response => {
+                store.auth = {...response.data};
+                return response.data;
+            })
+            .catch(async (e: Error) => {
+                console.error(e);
+                await logout();
+                return Promise.reject(e);
+            });
     },
 
-    refreshAccessToken: async function(error: any): Promise<any> {
-        let accessToken: string | null  = this.accessToken;
-        if (!localStorage.getItem(ACCESS_TOKEN_NAME)) {
+    refreshAccessToken: async function(): Promise<string> {
+        const accessToken: string | null = this.accessToken;
+        if (!accessToken) {
             await logout();
-            return Promise.reject(error);
+            return Promise.reject('accessToken is missing');
         }
         return axios.post('/api/v1/authenticate/refresh', null, {
             headers: {
-                'Authorization' : `Bearer ${accessToken}`
+                'Authorization': `Bearer ${accessToken}`
             }
         })
             .then(response => {
-                console.log(response);
-                if (response.status === 200) {
-                    this.accessToken = response.headers['authorization'];
-                    Promise.resolve();
-                } else {
-                    Promise.reject(error);
-                }
+                this.accessToken = response.headers['authorization'];
+                return response.headers['authorization'];
             })
     },
 

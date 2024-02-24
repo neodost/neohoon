@@ -19,7 +19,7 @@ api.interceptors.request.use(
 
 api.interceptors.response.use(
     (response) => {
-        let authorization: string = response.headers['authorization'];
+        const authorization: string = response.headers['authorization'];
         if (authorization) {
             authService.accessToken = authorization;
         }

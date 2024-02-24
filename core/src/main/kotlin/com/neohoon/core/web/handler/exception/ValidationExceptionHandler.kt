@@ -8,17 +8,20 @@ import jakarta.validation.ConstraintViolationException
 import jakarta.validation.ValidationException
 import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
+import org.springframework.http.HttpStatus
 import org.springframework.validation.ObjectError
 import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
+import org.springframework.web.bind.annotation.ResponseStatus
 
 private val log = KotlinLogging.logger {}
 
 @ControllerAdvice
 @ResponseBody
 @Order(Ordered.HIGHEST_PRECEDENCE + 100)
+@ResponseStatus(HttpStatus.BAD_REQUEST)
 class ValidationExceptionHandler(
     private val messageResolver: MessageResolver
 ) : AbstractExceptionHandler(messageResolver) {

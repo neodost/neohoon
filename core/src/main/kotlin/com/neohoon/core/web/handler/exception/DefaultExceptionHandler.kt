@@ -15,14 +15,14 @@ private val log = KotlinLogging.logger {}
 @ControllerAdvice
 @ResponseBody
 @Order(Ordered.HIGHEST_PRECEDENCE + 3000)
+@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 class DefaultExceptionHandler(
     private val messageResolver: MessageResolver
 ) : AbstractExceptionHandler(messageResolver) {
 
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception::class)
     fun handleException(e: Exception) = errorResponse("errors.default").also {
-        log.error(e) { "Uncaught exception: $e" }
+        log.error(e) { "unhandled exception: $e" }
     }
 
 }

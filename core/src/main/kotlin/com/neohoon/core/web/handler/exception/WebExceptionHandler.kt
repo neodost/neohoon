@@ -6,6 +6,7 @@ import org.springframework.core.Ordered
 import org.springframework.core.annotation.Order
 import org.springframework.http.HttpStatus
 import org.springframework.web.HttpRequestMethodNotSupportedException
+import org.springframework.web.bind.MissingRequestCookieException
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseBody
@@ -15,7 +16,7 @@ import org.springframework.web.servlet.NoHandlerFoundException
 @ControllerAdvice
 @ResponseBody
 @Order(Ordered.HIGHEST_PRECEDENCE + 500)
-class ServletExceptionHandler(
+class WebExceptionHandler(
     private val messageResolver: MessageResolver
 ) : AbstractExceptionHandler(messageResolver) {
 
@@ -27,6 +28,11 @@ class ServletExceptionHandler(
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException::class)
     fun handleHttpRequestMethodNotSupportedException(e: HttpRequestMethodNotSupportedException) =
+        ErrorResponse(e.localizedMessage)
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MissingRequestCookieException::class)
+    fun handlerMissingRequestCookieException(e: MissingRequestCookieException) =
         ErrorResponse(e.localizedMessage)
 
 }
