@@ -27,12 +27,12 @@ class TokenProvider(
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
-    fun createToken(loginId: String, authorities: Collection<String>, validationKey: String): String {
+    fun createToken(username: String, authorities: Collection<String>, validationKey: String): String {
 
         val now = Date()
 
         return Jwts.builder()
-            .subject(loginId)
+            .subject(username)
             .claim(AUTHORITIES_NAME, authorities.joinToString(","))
             .claim(VALIDATION_KEY_NAME, validationKey)
             .issuedAt(now)

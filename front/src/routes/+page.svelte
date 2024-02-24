@@ -18,7 +18,7 @@
 
     {#if !!authStore.auth}
         <div>
-            logged in : {authStore.auth.sub}
+            logged in : {authStore.auth.username}
         </div>
         <div>
             roles: {authStore.auth.authorities.map(it => it.authority).join(',')}

@@ -8,7 +8,7 @@
 
 <div>
     <span>Hi?</span>
-    <span>{store.auth?.id}</span>
+    <span>{store.auth?.username}</span>
     <a href="/">test</a>
     <button on:click={authService.loadUser}>loadUser</button>
 </div>

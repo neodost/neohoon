@@ -1,9 +1,5 @@
 <script lang="ts">
-    import {createAuth} from "$lib/store/auth/auth.svelte.js";
-    import authService from "$lib/service/auth/auth-service.js";
     import api from "$lib/util/axios";
-
-    let store = createAuth();
 
     let username = $state('');
     let password = $state('');
