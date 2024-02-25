@@ -1,26 +1,24 @@
-package com.neohoon.api.config.security.filter
+package com.neohoon.core.security.filter
 
-import com.neohoon.api.config.security.service.AuthService
-import com.neohoon.core.authentication.token.TokenProvider
-import com.neohoon.core.authentication.token.TokenValidateState.*
+import com.neohoon.core.security.authentication.AuthenticationService
+import com.neohoon.core.security.authentication.token.TokenValidateState.*
+import io.github.oshai.kotlinlogging.KotlinLogging
 import jakarta.servlet.FilterChain
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
-import org.slf4j.LoggerFactory
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
-import org.springframework.stereotype.Component
 import org.springframework.util.StringUtils
 import org.springframework.web.filter.OncePerRequestFilter
 
-@Component
+private val log = KotlinLogging.logger {}
+
 class JwtFilter(
-    private val tokenProvider: TokenProvider,
-    private val authService: AuthService,
+    private val authService: AuthenticationService,
+    private val authorizationHeaderName: String,
+    ignoreUriPatterns: List<String> = listOf()
 ): OncePerRequestFilter() {
 
-    private val log = LoggerFactory.getLogger(this::class.java)
-
-    private val ignoreUriPatterns = listOf("/api/v1/authenticate").map { AntPathRequestMatcher.antMatcher(it) }
+    private val ignoreUriPatternsMatchers = ignoreUriPatterns.map { AntPathRequestMatcher.antMatcher(it) }
 
     override fun doFilterInternal(
         request: HttpServletRequest,
@@ -28,14 +26,14 @@ class JwtFilter(
         filterChain: FilterChain
     ) {
         if (isIgnoreRequest(request)) {
-            log.debug("request ignored JWT filter")
+            log.debug { "request ignored JWT filter" }
             filterChain.doFilter(request, response)
             return
         }
 
         val accessToken = obtainAccessToken(request)
         if (StringUtils.hasText(accessToken)) {
-            when (tokenProvider.accessTokenValidState(accessToken)) {
+            when (authService.accessTokenValidState(accessToken)) {
                 VALID -> authService.setAuthentication(accessToken)
                 EXPIRED -> {}
                 INVALID -> {}
@@ -45,7 +43,7 @@ class JwtFilter(
     }
 
     private fun obtainAccessToken(request: HttpServletRequest): String {
-        val bearerToken = request.getHeader(AuthService.AUTHORIZATION_HEADER_NAME)
+        val bearerToken = request.getHeader(authorizationHeaderName)
 
         if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
             return bearerToken.substring(7)
@@ -54,7 +52,7 @@ class JwtFilter(
     }
 
     private fun isIgnoreRequest(request: HttpServletRequest): Boolean {
-        return ignoreUriPatterns.any { it.matches(request) }
+        return ignoreUriPatternsMatchers.any { it.matches(request) }
     }
 
 }

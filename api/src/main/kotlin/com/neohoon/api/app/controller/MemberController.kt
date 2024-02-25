@@ -1,7 +1,7 @@
 package com.neohoon.api.app.controller
 
 import com.neohoon.api.app.dto.member.MemberJoinDto
-import com.neohoon.api.config.security.userdetails.UserInfo
+import com.neohoon.core.security.userdetails.UserInfo
 import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.security.core.annotation.AuthenticationPrincipal
 import org.springframework.web.bind.annotation.*

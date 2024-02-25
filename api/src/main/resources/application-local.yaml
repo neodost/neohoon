@@ -5,7 +5,7 @@ spring:
       ddl-auto: update
     open-in-view: false
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/mydost
+    url: jdbc:mysql://127.0.0.1:3306/neohoon
     username: root
     password: 1234
   mvc:
@@ -15,6 +15,9 @@ spring:
   web:
     resources:
       add-mappings: false
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration
 
 server:
   http2:

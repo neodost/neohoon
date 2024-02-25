@@ -1,6 +1,6 @@
-package com.neohoon.core.authentication.token
+package com.neohoon.core.security.authentication.token
 
-import com.neohoon.core.authentication.token.TokenValidateState.*
+import com.neohoon.core.security.authentication.token.TokenValidateState.*
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.Jwts
@@ -20,21 +20,20 @@ class TokenProvider(
     tokenValidityInSeconds: Long,
 ) {
 
-    private val AUTHORITIES_NAME = "auth"
-    private val VALIDATION_KEY_NAME = "vk"
+    private val authoritiesName = "auth"
+    private val validationKeyName = "vk"
     private val key = Keys.hmacShaKeyFor(Decoders.BASE64.decode(secret))
     private val tokenValidityInMilliSeconds: Long = tokenValidityInSeconds * 1000
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
     fun createToken(username: String, authorities: Collection<String>, validationKey: String): String {
-
         val now = Date()
 
         return Jwts.builder()
             .subject(username)
-            .claim(AUTHORITIES_NAME, authorities.joinToString(","))
-            .claim(VALIDATION_KEY_NAME, validationKey)
+            .claim(authoritiesName, authorities.joinToString(","))
+            .claim(validationKeyName, validationKey)
             .issuedAt(now)
             .expiration(Date(now.time + tokenValidityInMilliSeconds))
             .signWith(key)
@@ -70,7 +69,7 @@ class TokenProvider(
         }
     }
 
-    fun getUserOfExpiredToken(jwt: String): TokenUserDto {
+    fun getUserByExpiredToken(jwt: String): TokenUserDto {
         val claims = try {
             Jwts.parser().verifyWith(key).build().parseSignedClaims(jwt).payload
         } catch (e: ExpiredJwtException) {
@@ -79,12 +78,12 @@ class TokenProvider(
         return TokenUserDto(
             claims.subject,
             extractAuthorityFromClaims(claims),
-            claims.get(VALIDATION_KEY_NAME, String::class.java)
+            claims.get(validationKeyName, String::class.java)
         )
     }
 
     fun extractAuthorityFromClaims(claims: Claims): MutableCollection<String> {
-        return claims[AUTHORITIES_NAME].toString().split(",")
+        return claims[authoritiesName].toString().split(",")
             .filter { StringUtils.hasText(it) }
             .toMutableList()
     }

@@ -30,9 +30,6 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
     implementation("org.springframework.session:spring-session-data-redis")
-    implementation(group = "io.jsonwebtoken", name = "jjwt-api", version = "0.12.3")
-    implementation(group = "io.jsonwebtoken", name = "jjwt-impl", version = "0.12.3")
-    implementation(group = "io.jsonwebtoken", name = "jjwt-jackson", version = "0.12.3")
 
     // https://mvnrepository.com/artifact/com.github.ulisesbocchio/jasypt-spring-boot-starter
     implementation(group = "com.github.ulisesbocchio", name = "jasypt-spring-boot-starter", version = "3.0.5")

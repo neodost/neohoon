@@ -32,11 +32,10 @@ api.interceptors.response.use(
                 case 400:
                     break;
                 case 401:
-                    return authService.refreshAccessToken()
-                        .then(() => {
-                            originalRequest._retry = true;
-                            return api(originalRequest)
-                        });
+                    console.log(error);
+                    await authService.refreshAccessToken();
+                    originalRequest._retry = true;
+                    return await api(originalRequest);
                 case 403:
                     alert(403);
                     break;

@@ -2,7 +2,7 @@ spring:
   session:
     timeout: 600s
   datasource:
-    url: jdbc:mysql://127.0.0.1:3306/mydost
+    url: jdbc:mysql://127.0.0.1:3306/neohoon
     username: root
     password: 1234
   jpa:

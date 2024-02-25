@@ -8,9 +8,9 @@ import com.neohoon.auth.config.security.oauth.attribute.NaverAttribute
 import com.neohoon.auth.config.security.userdetails.UserInfo
 import com.neohoon.domain.entity.member.Member
 import com.neohoon.domain.entity.member.MemberOauthLogin
-import com.neohoon.domain.entity.member.MemberRole
+import com.neohoon.domain.entity.member.MemberAuthority
 import com.neohoon.domain.enums.member.Provider
-import com.neohoon.domain.enums.member.Role
+import com.neohoon.domain.enums.member.Authority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
@@ -46,14 +46,20 @@ class CustomOauth2UserService(
 
         val login = memberOauthLoginRepository.findByProvider(attribute.provider, attribute.providerId)
             ?: let {
-                val member = memberRepository.findByEmail(email) ?: memberRepository.save(Member(email))
-                    .also { memberRoleRepository.save(MemberRole(it, Role.USER)) }
+                val member = memberRepository.findByEmail(email) ?: memberRepository.save(Member(email)).also {
+                    it.authorities.add(memberRoleRepository.save(
+                        MemberAuthority(
+                            it,
+                            Authority.USER
+                        )
+                    ))
+                }
                 memberOauthLoginRepository.save(MemberOauthLogin(member, attribute.provider, attribute.providerId))
             }
 
         return UserInfo(
             username = login.username,
-            authorities = login.member.roles.map { SimpleGrantedAuthority(it.role.name) }.toMutableList(),
+            authorities = login.member.authorities.map { SimpleGrantedAuthority(it.authority.name) }.toMutableList(),
             attribute = attribute
         )
     }

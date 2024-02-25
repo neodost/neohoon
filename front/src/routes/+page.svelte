@@ -21,7 +21,7 @@
             logged in : {authStore.auth.username}
         </div>
         <div>
-            roles: {authStore.auth.authorities.map(it => it.authority).join(',')}
+            authorities: {authStore.auth.authorities.map(it => it.authority).join(',')}
         </div>
     {:else}
         <div>

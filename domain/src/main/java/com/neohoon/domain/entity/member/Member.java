@@ -31,7 +31,7 @@ public class Member extends BaseEntity {
     private boolean verifyEmail = false;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
-    private final List<MemberRole> roles = new ArrayList<>();
+    private final List<MemberAuthority> authorities = new ArrayList<>();
 
     public Member(String email) {
         this.email = email;

@@ -1,4 +1,4 @@
-package com.neohoon.core.authentication.token
+package com.neohoon.core.security.authentication.token
 
 class TokenUserDto(
     val username: String,

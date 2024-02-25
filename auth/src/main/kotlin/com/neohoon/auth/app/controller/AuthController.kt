@@ -3,17 +3,12 @@ package com.neohoon.auth.app.controller
 import com.neohoon.auth.config.security.service.AuthService
 import com.neohoon.core.exception.client.AuthenticationFailException
 import io.github.oshai.kotlinlogging.KotlinLogging
-import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpSession
 import jakarta.validation.constraints.Pattern
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.util.StringUtils
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.annotation.CookieValue
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 private val log = KotlinLogging.logger {}
 
@@ -46,9 +41,12 @@ class AuthController(
     }
 
     @PostMapping("/logout")
-    fun logout(@CookieValue(AuthService.REFRESH_TOKEN_COOKIE_NAME) refreshToken: String): ResponseEntity<Unit> {
+    fun logout(
+        @CookieValue(AuthService.REFRESH_TOKEN_COOKIE_NAME) refreshToken: String,
+        session: HttpSession?
+    ): ResponseEntity<Unit> {
         log.debug { "refreshToken for logout in cookie : $refreshToken" }
-
+        session?.invalidate()
         return ResponseEntity.ok().headers { header ->
             header.add("Set-Cookie", authService.deleteRefreshTokenCookie(refreshToken).toString())
         }.build()

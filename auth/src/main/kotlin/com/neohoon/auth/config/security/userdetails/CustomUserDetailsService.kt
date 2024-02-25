@@ -3,28 +3,26 @@ package com.neohoon.auth.config.security.userdetails
 import com.neohoon.auth.app.repository.member.MemberLoginRepository
 import com.neohoon.auth.exception.security.MemberNotFoundException
 import com.neohoon.domain.entity.member.MemberLogin
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import org.springframework.data.repository.findByIdOrNull
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 
+private val log = KotlinLogging.logger {}
+
 @Component
 class CustomUserDetailsService(
     private val memberLoginRepository: MemberLoginRepository
 ): UserDetailsService {
 
-    private val log: Logger = LoggerFactory.getLogger(this::class.java)
-
     @Transactional(readOnly = true)
     override fun loadUserByUsername(username: String): UserDetails {
 
-        log.debug("loadUserByUsername / username: {}", username)
+        log.debug { "loadUserByUsername / username: $username" }
 
-        return memberLoginRepository.findByIdOrNull(username)
+        return memberLoginRepository.findWithAuthoritiesByUsername(username)
             ?.takeIf { !it.deleted }
             ?.let { createUserInfo(it) }
             ?: throw MemberNotFoundException()
@@ -32,8 +30,8 @@ class CustomUserDetailsService(
 
     private fun createUserInfo(login: MemberLogin): UserInfo {
 
-        val authorities = login.member.roles
-            .map { SimpleGrantedAuthority("ROLE_${it.role.name}") }
+        val authorities = login.member.authorities
+            .map { SimpleGrantedAuthority(it.authority.name) }
             .toMutableList()
 
         return UserInfo(

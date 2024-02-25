@@ -3,22 +3,23 @@ package com.neohoon.auth.config.security.service
 import com.neohoon.auth.app.domain.RefreshToken
 import com.neohoon.auth.app.redisrepository.RefreshTokenRepository
 import com.neohoon.auth.config.security.dto.TokenDto
-import com.neohoon.auth.config.security.userdetails.CustomUserDetailsService
-import com.neohoon.auth.config.security.userdetails.UserInfo
-import com.neohoon.core.authentication.token.TokenProvider
-import org.slf4j.LoggerFactory
+import com.neohoon.core.security.authentication.AuthenticationService
+import com.neohoon.core.security.authentication.token.TokenProvider
+import com.neohoon.core.security.userdetails.UserInfo
+import io.github.oshai.kotlinlogging.KotlinLogging
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.http.ResponseCookie
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
 import java.util.*
+
+private val log = KotlinLogging.logger {}
 
 @Service
 class AuthService(
     private val refreshTokenRepository: RefreshTokenRepository,
-    private val tokenProvider: TokenProvider,
-    private val userDetailsService: CustomUserDetailsService
-) {
+    private val tokenProvider: TokenProvider
+) : AuthenticationService(tokenProvider) {
 
     companion object {
         const val AUTHORIZATION_HEADER_NAME = "Authorization"
@@ -26,15 +27,16 @@ class AuthService(
         const val REFRESH_TOKEN_TIME_TO_LIVE: Long = 14 * 86400
     }
 
-    private val log = LoggerFactory.getLogger(this::class.java)
+    fun getTokenByAuthentication(authentication: Authentication): TokenDto {
+        val user = authentication.principal as UserInfo
 
-    fun authenticateForOAuth(username: String): TokenDto {
-        val user = userDetailsService.loadUserByUsername(username) as UserInfo
+        val combinedAuthorities: MutableSet<String> = authentication.authorities.map { it.authority }.toMutableSet()
+        combinedAuthorities.addAll(user.authorities.map { it.authority })
 
         return TokenDto(
             tokenProvider.createToken(
                 user.username,
-                user.authorities.map { it.authority },
+                combinedAuthorities,
                 user.validationKey
             ), generateRefreshToken(user.username, user.validationKey)
         )
@@ -47,14 +49,14 @@ class AuthService(
             expiration = REFRESH_TOKEN_TIME_TO_LIVE
         ).also { refreshTokenRepository.save(it) }
 
-        log.debug("refreshToken generated")
+        log.debug { "refreshToken generated" }
 
         return refreshToken.token
     }
 
-    fun refreshToken(token: String, jwt: String): TokenDto? {
-        val user = tokenProvider.getUserOfExpiredToken(jwt)
-        return refreshTokenRepository.findByIdOrNull(token)
+    fun refreshToken(refreshToken: String, accessToken: String): TokenDto? {
+        val user = tokenProvider.getUserByExpiredToken(accessToken)
+        return refreshTokenRepository.findByIdOrNull(refreshToken)
             ?.takeIf { user.username == it.username && user.validationKey == it.validationKey }
             ?.let {
                 refreshTokenRepository.delete(it)

@@ -1,6 +1,7 @@
 package com.neohoon.auth.config.security.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.neohoon.domain.enums.member.Authority
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
 import org.slf4j.LoggerFactory
@@ -25,6 +26,11 @@ class CustomAccessDeniedHandler(
         accessDeniedException: AccessDeniedException
     ) {
         log.debug("access denied: {}", request.requestURI)
+
+        Authority.values().forEach {
+            log.debug("userInRle: $it ${request.isUserInRole(it.name)}")
+        }
+
         with (response) {
             contentType = MediaType.APPLICATION_JSON.toString()
             characterEncoding = StandardCharsets.UTF_8.name()

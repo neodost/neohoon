@@ -1,9 +1,9 @@
 package com.neohoon.api.config.security
 
-import com.neohoon.api.config.security.filter.JwtFilter
 import com.neohoon.api.config.security.handler.CustomAccessDeniedHandler
 import com.neohoon.api.config.security.handler.CustomAuthenticationEntryPoint
 import com.neohoon.api.config.security.service.AuthService
+import com.neohoon.core.security.filter.JwtFilter
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -22,8 +22,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 class SecurityConfig(
     private val authenticationEntryPoint: CustomAuthenticationEntryPoint,
     private val accessDeniedHandler: CustomAccessDeniedHandler,
-    private val jwtFilter: JwtFilter,
-
+    private val authService: AuthService,
     @Value("\${neohoon.security.cors.allowed-origins}")
     private val allowedOrigins: Array<String>
 ) {
@@ -51,7 +50,7 @@ class SecurityConfig(
             formLogin {
                 it.disable()
             }
-            addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter::class.java)
+            addFilterBefore(jwtFilter(authService), UsernamePasswordAuthenticationFilter::class.java)
             build()
         }
 
@@ -68,6 +67,12 @@ class SecurityConfig(
         source.registerCorsConfiguration("/**", config)
         return source
     }
+
+    @Bean
+    fun jwtFilter(authService: AuthService): JwtFilter = JwtFilter(
+        authService,
+        AuthService.AUTHORIZATION_HEADER_NAME
+    )
 
     private fun antMatchers(vararg patterns: String): Array<RequestMatcher> {
         return patterns.map { AntPathRequestMatcher(it) }.toTypedArray()
