@@ -8,31 +8,28 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-class JasyptConfig (
+class JasyptConfig(
     @Value("\${jasypt.encryptor.password:rlaehdgurWkd}")
-    var password: String
+    private var password: String
 ) {
-    val algorithm: String = "PBEWithMD5AndDES"
-    val keyObtentionIterations: Int = 1000
-    val poolSize: Int = 1
-    val outputType: String = "base64"
+    private val algorithm: String = "PBEWithMD5AndDES"
+    private val keyObtentionIterations: Int = 1000
+    private val poolSize: Int = 1
+    private val outputType: String = "base64"
 
     @Bean("jasyptStringEncryptor")
-    fun stringEncryptor(): StringEncryptor {
-        SimpleStringPBEConfig()
-            .let {
-                it.password = password
-                it.algorithm = algorithm
-                it.keyObtentionIterations = keyObtentionIterations
-                it.poolSize = poolSize
-                it.stringOutputType = outputType
+    fun stringEncryptor(): StringEncryptor = SimpleStringPBEConfig().let {
+        it.password = password
+        it.algorithm = algorithm
+        it.keyObtentionIterations = keyObtentionIterations
+        it.poolSize = poolSize
+        it.stringOutputType = outputType
 
-                password = ""
+        password = ""
 
-                val encryptor = PooledPBEStringEncryptor()
-                encryptor.setConfig(it)
-                return encryptor
-            }
+        val encryptor = PooledPBEStringEncryptor()
+        encryptor.setConfig(it)
+        return encryptor
     }
 
 

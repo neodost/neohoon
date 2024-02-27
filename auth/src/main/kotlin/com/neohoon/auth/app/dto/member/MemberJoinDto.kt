@@ -1,4 +1,4 @@
-package com.neohoon.api.app.dto.member
+package com.neohoon.auth.app.dto.member
 
 import com.neohoon.core.validation.check.Check
 import com.neohoon.core.validation.check.CheckValidatable

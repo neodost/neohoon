@@ -1,6 +1,5 @@
 package com.neohoon.domain.entity.member;
 
-import com.neohoon.domain.entity.BaseEntity;
 import com.neohoon.domain.enums.member.Provider;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -16,10 +15,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class MemberOauthLogin extends MemberLogin {
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 10, nullable = false, updatable = false)
+    @Column(length = 10, updatable = false)
     private Provider provider;
 
-    @Column(nullable = false, updatable = false)
+    @Column(updatable = false)
     private String providerId;
 
     public MemberOauthLogin(Member member, Provider provider, String providerId) {

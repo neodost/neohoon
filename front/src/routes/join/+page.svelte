@@ -1,17 +1,13 @@
 <script lang="ts">
-    import api from "$lib/util/axios";
+    import authService from "$lib/service/auth/auth-service";
 
-    let username = $state('');
+    let loginId = $state('');
     let password = $state('');
+    let lastName = $state('');
+    let firstName = $state('');
 
     const join = () => {
-        api.post('/api/v1/member/join', {
-            username,
-            password
-        })
-            .then(response => {
-                console.log(response);
-            })
+        authService.join(loginId, password, firstName, lastName);
     }
 
 </script>
@@ -21,8 +17,16 @@
 
     <form on:submit={join}>
         <label>
-            <span>username</span>
-            <input type="text" bind:value={username} >
+            <span>lastName</span>
+            <input type="text" bind:value={lastName} >
+        </label>
+        <label>
+            <span>firstName</span>
+            <input type="text" bind:value={firstName} >
+        </label>
+        <label>
+            <span>loginId</span>
+            <input type="text" bind:value={loginId} >
         </label>
         <label>
             <span>password</span>

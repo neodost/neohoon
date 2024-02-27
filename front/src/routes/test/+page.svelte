@@ -22,9 +22,9 @@
     <span>{store.auth?.username}</span>
     <a href="/">test</a>
     <button on:click={authService.loadUser}>loadUser</button>
-    <!--{#if store.auth?.authorities.filter(it => it.authority === 'ROLE_ADMINISTRATOR').length ?? 0 > 0}-->
+    {#if store.auth?.authorities.filter(it => it.authority === 'ROLE_ADMINISTRATOR').length ?? 0 > 0}
         <input type="text" name="" id="" bind:value={username}>
         <button on:click={switchUser}>switchUser</button>
-    <!--{/if}-->
+    {/if}
     <button on:click={exitSwitchExit}>switchExit</button>
 </div>

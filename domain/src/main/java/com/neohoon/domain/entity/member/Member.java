@@ -37,6 +37,11 @@ public class Member extends BaseEntity {
         this.email = email;
     }
 
+    public Member(String email, MemberName name) {
+        this(email);
+        this.name = name;
+    }
+
     public void verifyEmail() {
         this.verifyEmail = true;
     }

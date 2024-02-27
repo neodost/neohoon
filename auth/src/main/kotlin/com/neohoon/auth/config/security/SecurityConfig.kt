@@ -1,5 +1,6 @@
 package com.neohoon.auth.config.security
 
+import com.neohoon.auth.config.security.authentication.CustomAuthenticationProvider
 import com.neohoon.auth.config.security.handler.*
 import com.neohoon.auth.config.security.service.AuthService
 import com.neohoon.core.security.filter.JwtFilter
@@ -23,20 +24,24 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @Configuration
 class SecurityConfig(
     private val authService: AuthService,
+    private val authenticationProvider: CustomAuthenticationProvider,
     private val userDetailsService: UserDetailsService,
     private val authenticationEntryPoint: CustomAuthenticationEntryPoint,
     private val accessDeniedHandler: CustomAccessDeniedHandler,
     private val oauth2SuccessHandler: Oauth2SuccessHandler,
     private val oauth2FailureHandler: Oauth2FailureHandler,
-    private val switchUserSuccessHandler: SwitchUserSuccessHandler,
-    private val switchUserFailureHandler: SwitchUserFailureHandler,
+    private val defaultAuthenticationSuccessHandler: DefaultAuthenticationSuccessHandler,
+    private val defaultAuthenticationFailureHandler: DefaultAuthenticationFailureHandler,
+    private val defaultLogoutSuccessHandler: DefaultLogoutSuccessHandler,
     @Value("\${neohoon.security.cors.allowed-origins}")
     private val allowedOrigins: Array<String>
 ) {
-    val switchUrl = "/api/v1/authenticate/switch"
-    val switchExitUrl = "/api/v1/authenticate/switch/exit"
+    val switchUrl = "/auth/v1/switch"
+    val switchExitUrl = "/auth/v1/switch/exit"
     val oauth2LoginUrlPattern = "/login/oauth2/code/**"
     val oauth2AuthorizationUrlPattern = "/oauth2/authorization/**"
+    val loginUrl = "/auth/v1/authenticate"
+    val logoutUrl = "/auth/v1/logout"
 
     @Bean
     fun securityFilterChain(http: HttpSecurity): SecurityFilterChain =
@@ -46,9 +51,9 @@ class SecurityConfig(
             cors { it.configurationSource(corsConfigurationSource()) }
             authorizeHttpRequests {
                 it.requestMatchers("/actuator/**").permitAll()
-                it.requestMatchers("/api/v1/authenticate/switch").hasAuthority(Authority.ADMINISTRATOR.name)
-                it.requestMatchers("/api/v1/authenticate/switch/exit").hasAuthority(Authority.ROLE_PREVIOUS_ADMINISTRATOR.name)
-                it.requestMatchers("/api/v1/authenticate/**").permitAll()
+                it.requestMatchers(switchUrl).hasAuthority(Authority.ADMINISTRATOR.name)
+                it.requestMatchers(switchExitUrl).hasAuthority(Authority.ROLE_PREVIOUS_ADMINISTRATOR.name)
+                it.requestMatchers("/auth/v1/**").permitAll()
                 it.requestMatchers(*antMatchers(oauth2LoginUrlPattern)).permitAll()
                 it.requestMatchers(*antMatchers(oauth2AuthorizationUrlPattern)).permitAll()
                 it.anyRequest().denyAll()
@@ -61,6 +66,21 @@ class SecurityConfig(
                 it.successHandler(oauth2SuccessHandler)
                 it.failureHandler(oauth2FailureHandler)
             }
+            formLogin {
+                it.usernameParameter("loginId")
+                it.passwordParameter("password")
+                it.loginProcessingUrl(loginUrl)
+                it.successHandler(defaultAuthenticationSuccessHandler)
+                it.failureHandler(defaultAuthenticationFailureHandler)
+            }
+            logout {
+                it.logoutUrl(logoutUrl)
+                it.logoutSuccessHandler(defaultLogoutSuccessHandler)
+                it.clearAuthentication(true)
+                it.deleteCookies(AuthService.REFRESH_TOKEN_COOKIE_NAME)
+                it.invalidateHttpSession(true)
+            }
+            authenticationProvider(authenticationProvider)
             addFilterAfter(switchUserFilter(), AuthorizationFilter::class.java)
             addFilterBefore(jwtFilter(authService), UsernamePasswordAuthenticationFilter::class.java)
             build()
@@ -84,8 +104,8 @@ class SecurityConfig(
         setUserDetailsService(userDetailsService)
         setSwitchUserUrl(switchUrl)
         setExitUserUrl(switchExitUrl)
-        setSuccessHandler(switchUserSuccessHandler)
-        setFailureHandler(switchUserFailureHandler)
+        setSuccessHandler(defaultAuthenticationSuccessHandler)
+        setFailureHandler(defaultAuthenticationFailureHandler)
         setSwitchAuthorityRole(Authority.ROLE_PREVIOUS_ADMINISTRATOR.name)
     }
 
@@ -93,7 +113,7 @@ class SecurityConfig(
     fun jwtFilter(authService: AuthService): JwtFilter = JwtFilter(
         authService,
         AuthService.AUTHORIZATION_HEADER_NAME,
-        listOf(switchExitUrl, oauth2LoginUrlPattern, oauth2AuthorizationUrlPattern)
+        listOf(switchExitUrl, oauth2LoginUrlPattern, oauth2AuthorizationUrlPattern, loginUrl, logoutUrl)
     )
 
     private fun antMatchers(vararg patterns: String): Array<RequestMatcher> {

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*
 private val log = KotlinLogging.logger {}
 
 @RestController
-@RequestMapping("/api/v1/authenticate")
+@RequestMapping("/auth/v1")
 @Validated
 class AuthController(
     private val authService: AuthService

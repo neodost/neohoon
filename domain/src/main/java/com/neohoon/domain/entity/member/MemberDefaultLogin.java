@@ -16,8 +16,13 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 public class MemberDefaultLogin extends MemberLogin {
 
-    @Column(updatable = false, length = 320)
+    @Column(updatable = false, length = 320, unique = true, nullable = true)
     private String loginId;
     private String password;
 
+    public MemberDefaultLogin(Member member, String loginId, String password) {
+        super(member);
+        this.loginId = loginId;
+        this.password = password;
+    }
 }

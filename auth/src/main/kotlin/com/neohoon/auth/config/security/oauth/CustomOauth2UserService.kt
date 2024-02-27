@@ -2,7 +2,7 @@ package com.neohoon.auth.config.security.oauth
 
 import com.neohoon.auth.app.repository.member.MemberOauthLoginRepository
 import com.neohoon.auth.app.repository.member.MemberRepository
-import com.neohoon.auth.app.repository.member.MemberRoleRepository
+import com.neohoon.auth.app.repository.member.MemberAuthorityRepository
 import com.neohoon.auth.config.security.oauth.attribute.KakaoAttribute
 import com.neohoon.auth.config.security.oauth.attribute.NaverAttribute
 import com.neohoon.auth.config.security.userdetails.UserInfo
@@ -22,7 +22,7 @@ import org.springframework.util.StringUtils
 @Service
 class CustomOauth2UserService(
     private val memberRepository: MemberRepository,
-    private val memberRoleRepository: MemberRoleRepository,
+    private val memberAuthorityRepository: MemberAuthorityRepository,
     private val memberOauthLoginRepository: MemberOauthLoginRepository,
 ) : DefaultOAuth2UserService() {
 
@@ -47,7 +47,7 @@ class CustomOauth2UserService(
         val login = memberOauthLoginRepository.findByProvider(attribute.provider, attribute.providerId)
             ?: let {
                 val member = memberRepository.findByEmail(email) ?: memberRepository.save(Member(email)).also {
-                    it.authorities.add(memberRoleRepository.save(
+                    it.authorities.add(memberAuthorityRepository.save(
                         MemberAuthority(
                             it,
                             Authority.USER

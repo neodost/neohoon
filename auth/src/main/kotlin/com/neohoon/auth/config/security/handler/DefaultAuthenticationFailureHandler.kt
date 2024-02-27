@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 private val log = KotlinLogging.logger {}
 
 @Component
-class SwitchUserFailureHandler: SimpleUrlAuthenticationFailureHandler() {
+class DefaultAuthenticationFailureHandler: SimpleUrlAuthenticationFailureHandler() {
 
     override fun onAuthenticationFailure(
         request: HttpServletRequest,

@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 export default defineConfig({
 	server: {
 		proxy: {
-			'/api/v1/authenticate': {
+			'/auth': {
 				target: 'https://localhost:8081',
 				secure: false
 			},

@@ -1,10 +1,10 @@
-import api from "$lib/util/axios";
+import authApi from '$lib/util/axios/axios-auth';
 import authService from "$lib/service/auth/auth-service";
 
 export default {
 
     switch: (username: string) => {
-        api.post('/authenticate/switch', new URLSearchParams({
+        authApi.post('/switch', new URLSearchParams({
             username
         }))
             .then((response) => {
@@ -18,7 +18,7 @@ export default {
     },
 
     exitSwitch: () => {
-        api.post('/authenticate/switch/exit')
+        authApi.post('/switch/exit')
             .then(() => {
                 console.log('exit success')
                 authService.loadUser()

@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component
 private val log = KotlinLogging.logger {}
 
 @Component
-class SwitchUserSuccessHandler(
+class DefaultAuthenticationSuccessHandler(
     private val authService: AuthService
 ): SimpleUrlAuthenticationSuccessHandler() {
 
@@ -20,10 +20,8 @@ class SwitchUserSuccessHandler(
         response: HttpServletResponse,
         authentication: Authentication
     ) {
-
         authService.getTokenByAuthentication(authentication).also {
             with (response) {
-                log.warn { "switch user success: ${authentication.principal}" }
                 setHeader(AuthService.AUTHORIZATION_HEADER_NAME, it.accessToken)
                 setHeader("Set-Cookie", authService.getRefreshTokenCookie(it.refreshToken).toString())
             }
