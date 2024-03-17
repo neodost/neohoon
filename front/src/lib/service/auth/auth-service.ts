@@ -96,10 +96,14 @@ export default {
     },
 
     set accessToken(accessToken: string) {
-        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem(ACCESS_TOKEN_NAME, accessToken);
     },
 
     get accessToken(): string | null {
-        return localStorage.getItem('accessToken');
+        return localStorage.getItem(ACCESS_TOKEN_NAME);
+    },
+
+    clearAccessToken: () => {
+        localStorage.removeItem(ACCESS_TOKEN_NAME);
     }
 }

@@ -1,5 +1,6 @@
 import axios from "axios";
 import authService from "$lib/service/auth/auth-service";
+import {alert} from "$lib/util/common-util";
 
 const api = axios.create({
     baseURL: `/api/v1`,
@@ -27,19 +28,26 @@ api.interceptors.response.use(
     },
     async (error) => {
         const originalRequest = error.config;
-        if (error.response?.status) {
-            switch (error.response.status) {
-                case 400:
-                    break;
-                case 401:
-                    console.log(error);
-                    await authService.refreshAccessToken();
-                    originalRequest._retry = true;
-                    return await api(originalRequest);
-                case 403:
-                    alert(403);
-                    break;
-            }
+        switch (error.response.status) {
+            case 400:
+                alert('' + error.response.data.message);
+                break;
+            case 401:
+                return await authService.refreshAccessToken()
+                    .then(() => api(originalRequest))
+                    .catch(() => {
+                        authService.clearAccessToken();
+                        window.location.href = '/';
+                    })
+            case 403:
+                alert('권한이 없습니다.');
+                break;
+            case 404:
+                alert('404 ');
+                break;
+            default:
+                alert('서버 오류');
+                break;
         }
 
         return Promise.reject(error);
