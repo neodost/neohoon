@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 public class Meter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "oil_meter_id", nullable = false, updatable = false)
+    @Column(name = "meter_id", nullable = false, updatable = false)
     private Long id;
 
     @OneToOne(fetch = FetchType.LAZY)
@@ -22,7 +22,7 @@ public class Meter {
     private Equipment equipment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "oil_tank_id", nullable = false)
+    @JoinColumn(name = "tank_id", nullable = false)
     private Tank tank;
 
     @OneToOne(fetch = FetchType.LAZY)

@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 public class Tank extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "oil_tank_id")
+    @Column(name = "tank_id")
     private Long id;
 
     @Enumerated(EnumType.STRING)

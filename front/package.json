@@ -1,5 +1,5 @@
 {
-	"name": "front2",
+	"name": "front",
 	"version": "0.0.1",
 	"private": true,
 	"scripts": {
@@ -20,10 +20,10 @@
 		"@typescript-eslint/parser": "^7.0.2",
 		"eslint": "^8.57.0",
 		"eslint-config-prettier": "^9.1.0",
-		"eslint-plugin-svelte": "^2.36.0-next.10",
+		"eslint-plugin-svelte": "^2.36.0-next.13",
 		"prettier": "^3.1.1",
 		"prettier-plugin-svelte": "^3.2.1",
-		"svelte": "^5.0.0-next.80",
+		"svelte": "^5.0.0-next.96",
 		"svelte-check": "^3.6.7",
 		"tslib": "^2.6.2",
 		"typescript": "^5.3.3",
@@ -31,6 +31,7 @@
 	},
 	"type": "module",
 	"dependencies": {
+		"@tanstack/svelte-query": "^5.28.6",
 		"axios": "^1.6.7"
 	}
 }

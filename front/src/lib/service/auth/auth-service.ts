@@ -65,6 +65,8 @@ export default {
             return Promise.reject('accessToken is missing');
         }
 
+        console.log('loaduser')
+
         return api.get('/member/me')
             .then(response => {
                 store.auth = {...response.data};

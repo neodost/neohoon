@@ -21,7 +21,7 @@ public class MemberAuthority extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(length = 30, nullable = false, updatable = false)
+    @Column(length = 30, nullable = false, updatable =  false)
     private Authority authority;
 
     @ManyToOne(fetch = FetchType.LAZY)

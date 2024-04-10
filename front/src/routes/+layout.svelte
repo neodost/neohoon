@@ -1,19 +1,15 @@
 <script lang="ts">
-    import authService from "$lib/service/auth/auth-service.js";
+	import { QueryClient, QueryClientProvider } from '@tanstack/svelte-query';
+	import { browser } from '$app/environment';
 
-    let initialized = $state(false);
-
-    $effect(() => {
-        if (!initialized) {
-            authService.loadUser()
-                .finally(() => {
-                    initialized = true;
-                })
-        }
-    })
-
+	const queryClient = new QueryClient({
+		defaultOptions: {
+			queries: {
+				enabled: browser
+			}
+		}
+	});
 </script>
-
-{#if initialized}
-    <slot />
-{/if}
+<QueryClientProvider client={queryClient}>
+	<slot />
+</QueryClientProvider>

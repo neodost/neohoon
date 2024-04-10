@@ -1,8 +1,7 @@
 <script lang="ts">
     import {page} from "$app/stores";
-    import {goto} from "$app/navigation";
-    import {onMount} from "svelte";
     import authService from "$lib/service/auth/auth-service.js";
+    import {goto} from "$app/navigation";
 
     const setUserLogin = (accessToken: string) => {
         authService.accessToken = accessToken;
@@ -12,13 +11,12 @@
             })
     }
 
-    onMount(() => {
+    $effect(() => {
         let accessToken: string | null = $page.url.searchParams.get('accessToken');
-        if (!accessToken) {
-            throw new Error('Access token is required');
+        if (accessToken) {
+            setUserLogin(accessToken)
+            goto('/')
         }
-        setUserLogin(accessToken)
-        goto('/')
     })
 
 </script>

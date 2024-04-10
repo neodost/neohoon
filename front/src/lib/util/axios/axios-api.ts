@@ -37,7 +37,7 @@ api.interceptors.response.use(
                     .then(() => api(originalRequest))
                     .catch(() => {
                         authService.clearAccessToken();
-                        window.location.href = '/';
+                        // window.location.href = '/';
                     })
             case 403:
                 alert('권한이 없습니다.');
