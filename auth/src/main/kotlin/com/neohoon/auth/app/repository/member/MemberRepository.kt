@@ -1,6 +1,7 @@
 package com.neohoon.auth.app.repository.member
 
 import com.neohoon.domain.entity.member.Member
+import com.neohoon.domain.enums.member.Authority
 import com.neohoon.domain.enums.member.Provider
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -28,5 +29,13 @@ interface MemberRepository : JpaRepository<Member, Long> {
           and m.deleted = false
     """)
     fun findByEmail(@Param("email") email: String): Member?
+
+    @Query("""
+        select count(1) 
+        from Member m
+            inner join m.authorities ma on ma.authority = :authority 
+        where m.deleted = false
+    """)
+    fun countByAuthority(@Param("authority") authority: Authority): Long
 
 }

@@ -1,70 +1,46 @@
 <script lang="ts">
     import authService from "$lib/service/auth/auth-service";
-    import {Navbar, NavbarBrand} from "@sveltestrap/sveltestrap";
+    import {useQueryClient} from "@tanstack/svelte-query";
+    import {AUTH_CHECK} from "$lib/constant/query-key/auth";
 
-    let loginId: string = $state('');
-    let password: string = $state('');
+    const queryClient = useQueryClient();
+
+    const login = $state({
+        loginId: '',
+        password: ''
+    })
 
     const loginByOAuth = (provider: string) => {
         authService.loginByOAuth(provider)
     }
 
-    const handleLogin = () => {
-        authService.login(loginId, password)
-            .then(response => {
-                console.log(response);
+    const handleLogin = (e) => {
+        e.preventDefault();
+        authService.login(login.loginId, login.password)
+            .then(() => {
+                queryClient.invalidateQueries({
+                    queryKey: [AUTH_CHECK],
+                })
             })
     }
 
 </script>
 
-<main class="d-flex w-100">
-    <div class="container d-flex flex-column">
-        <div class="row vh-100">
-            <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 mx-auto d-table h-100">
-                <div class="d-table-cell align-middle">
+<main>
+    <form action="" onsubmit={handleLogin}>
+        <fieldset>
+            <legend>login</legend>
+            <label for="loginId">username</label>
+            <input type="text" id="loginId" name="loginId" bind:value={login.loginId} /><br />
 
-                    <div class="text-center mt-4">
-                        <h1 class="h2">Welcome back!</h1>
-                        <p class="lead">
-                            Sign in to your account to continue
-                        </p>
-                    </div>
+            <label for="password">password</label>
+            <input type="password" id="password" name="password" bind:value={login.password} /><br />
 
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="m-sm-3">
-                                <form>
-                                    <div class="mb-3">
-                                        <label class="form-label">Email</label>
-                                        <input class="form-control form-control-lg" type="text" bind:value={loginId} placeholder="Enter your email" />
-                                    </div>
-                                    <div class="mb-3">
-                                        <label class="form-label">Password</label>
-                                        <input class="form-control form-control-lg" type="password" bind:value={password} placeholder="Enter your password" />
-                                    </div>
-                                    <div>
-                                        <div class="form-check align-items-center">
-                                            <input id="customControlInline" type="checkbox" class="form-check-input" value="remember-me" name="remember-me" checked>
-                                            <label class="form-check-label text-small" for="customControlInline">Remember me</label>
-                                        </div>
-                                    </div>
-                                    <div class="d-grid gap-2 mt-3">
-                                        <buton type="button" class="btn btn-lg btn-primary">Sign in</buton>
-                                    </div>
-                                    <div class="d-grid gap-2 mt-3">
-                                        <buton type="button" class="btn btn-sm btn-primary" onclick={() => loginByOAuth('kakao')}>kakao</buton>
-                                        <buton type="button" class="btn btn-sm btn-primary" onclick={() => loginByOAuth('naver')}>naver</buton>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="text-center mb-3">
-                        Don't have an account? <a href="pages-sign-up.html">Sign up</a>
-                    </div>
-                </div>
-            </div>
+            <button type="submit">login</button>
+        </fieldset>
+        <div>
+            <button type="button" onclick={() => loginByOAuth('kakao')}>kakao</button>
+            <button type="button" onclick={() => loginByOAuth('naver')}>naver</button>
         </div>
-    </div>
+    </form>
 </main>
