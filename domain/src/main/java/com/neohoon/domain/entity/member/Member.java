@@ -42,7 +42,7 @@ public class Member extends BaseEntity {
         this.name = name;
     }
 
-    public void verifyEmail() {
+    public void markEmailVerified() {
         this.verifyEmail = true;
     }
 }

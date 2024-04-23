@@ -24,3 +24,10 @@
         <slot />
     </main>
 {/if}
+
+<style>
+    :global(body) {
+        margin: 0;
+        padding: 0;
+    }
+</style>
